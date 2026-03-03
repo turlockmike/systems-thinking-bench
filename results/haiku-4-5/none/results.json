@@ -1,0 +1,358 @@
+{
+  "meta": {
+    "timestamp": "2026-03-03T14:10:39.869937",
+    "model": "claude-haiku-4-5",
+    "judge_model": "claude-opus-4-6",
+    "prompt_tier": "none",
+    "system_prompt": "You are a helpful assistant. Answer the question thoroughly.",
+    "version": "1.0",
+    "num_problems": 10,
+    "total_cost": 0.0588
+  },
+  "results": [
+    {
+      "problem_id": "infra-01",
+      "model": "claude-haiku-4-5",
+      "prompt_tier": "none",
+      "response": "# The Core Problem: They Treated the Symptom, Not the Cause\n\nThe team made a classic mistake: **they cached their way out of investigating the real issue.**\n\n## What Actually Went Wrong\n\n1. **Misdiagnosed the Problem**\n   - The degraded response times (50ms \u2192 1200ms) were likely a *symptom* of the database growing and queries slowing down\n   - Instead of asking \"Why is the database growing?\", they asked \"How do we make queries faster?\"\n\n2. **Cache Masked the Real Problem**\n   - Redis improved response times dramatically (40ms), which felt like victory\n   - This success reduced urgency to investigate the underlying cause\n   - The database continued growing 10x unaddressed for 2 months\n\n3. **No Monitoring or Data Lifecycle Management**\n   - They never implemented:\n     - Database growth monitoring/alerting\n     - Data retention/cleanup policies\n     - Data archival strategies\n     - Investigation into *why* data was accumulating\n\n## What Likely Caused the 10x Growth\n\n- Unintended data duplication\n- Logs/audit trails never being purged\n- Old test data not being cleaned up\n- A data sync/import process running incorrectly\n- Application bugs inserting duplicate records\n\n## The Lesson\n\n**Caching is great\u2014but not as a substitute for root cause analysis.** \n\nThe correct approach would have been:\n1. Investigate why response times degraded initially\n2. Monitor database growth metrics\n3. *Then* apply performance optimizations like caching\n4. Maintain ongoing observability of database health\n\nThey created technical debt that eventually came due spectacularly (database crash).",
+      "input_tokens": 217,
+      "output_tokens": 921,
+      "cost": 0.004822000000000001,
+      "scores": {
+        "frame_identification": {
+          "score": 1,
+          "reasoning": "The response explicitly names the embedded assumption: 'Instead of asking Why is the database growing?, they asked How do we make queries faster?' and calls it a misdiagnosis. It clearly identifies that the team framed the problem as a performance/caching issue rather than investigating the symptom."
+        },
+        "frame_escape": {
+          "score": 1,
+          "reasoning": "The response reframes the problem as one of root cause analysis rather than performance optimization. It reasons from this new frame by proposing they should have investigated why response times degraded before applying caching, and evaluates the outcome from this reframed perspective."
+        },
+        "causal_depth": {
+          "score": 0,
+          "reasoning": "The response traces from slow responses back to database growth, but critically misses the amplification chain. It says the cache 'masked' the problem and the database 'continued growing 10x unaddressed,' treating the growth rate as independent of the cache. The deep insight\u2014that the cache enabled more traffic which drove more writes which accelerated the very growth causing the problem\u2014is absent. The 'What Likely Caused the 10x Growth' section lists generic possibilities (logs, duplication) rather than the cache-driven amplification."
+        },
+        "system_dynamics": {
+          "score": 0,
+          "reasoning": "The response does not identify the critical feedback loop: cache \u2192 more capacity \u2192 more traffic \u2192 more writes \u2192 faster data growth \u2192 bigger crash. It treats the cache and the data growth as parallel issues (cache masks, growth continues independently) rather than as a reinforcing feedback loop where the fix actively amplifies the root cause."
+        },
+        "purpose_alignment": {
+          "score": 1,
+          "reasoning": "The response notes that the 40ms response time 'felt like victory' and that 'this success reduced urgency to investigate the underlying cause,' effectively distinguishing between the metric (response time) and the actual purpose (sustainable system health). It evaluates the outcome against real system reliability rather than just the response time number."
+        },
+        "total": 3
+      }
+    },
+    {
+      "problem_id": "infra-02",
+      "model": "claude-haiku-4-5",
+      "prompt_tier": "none",
+      "response": "# The Core Problem\n\nThis isn't actually a backup system problem\u2014**the backup system is working perfectly as designed**. This is a classic case of **backing up corrupt source data**.\n\n## What's Happening\n\nSince all 30 days of backups contain the same corruption and the backup process itself is flawless, the corruption must have existed in the live database before being backed up. The backup system faithfully captured the corrupted state each night.\n\n## The Real Issues to Fix\n\n**1. Restore from beyond the corruption window**\n- Go back more than 30 days to find a clean backup\n- This buys you time to diagnose the actual problem\n\n**2. Diagnose the source corruption**\n- **Hardware failure** (bad RAM causing live data corruption, bad disk sectors)\n- **Database engine corruption** (undetected consistency issues)\n- **Application bug** (slowly corrupting records)\n- **Concurrent write conflicts** (unprotected access patterns)\n\nCheck:\n- Database integrity logs (`DBCC CHECKDB`, `mysqlcheck`, etc.)\n- Server hardware diagnostics\n- Application error logs from 30+ days ago\n- System resource monitoring (memory errors, disk I/O failures)\n\n**3. Implement earlier detection**\n- Run regular integrity checks on live data, not just backups\n- Add backup verification tests (periodically restore and validate)\n- Monitor checksums across multiple independent backup copies\n- Implement data validation at the application layer\n\n**4. Extend backup retention**\n- Keep backups beyond 30 days\n- Implement incremental/differential backups to go further back cheaply\n\n**The fix isn't the backup system\u2014it's preventing corruption at the source and detecting it sooner.**",
+      "input_tokens": 211,
+      "output_tokens": 937,
+      "cost": 0.004896,
+      "scores": {
+        "frame_identification": {
+          "score": 1,
+          "reasoning": "The response explicitly names the embedded assumption in the very first line: 'This isn't actually a backup system problem\u2014the backup system is working perfectly as designed.' It clearly identifies that the frame of 'fix the backup system' is wrong because the system is faithfully backing up already-corrupt source data."
+        },
+        "frame_escape": {
+          "score": 1,
+          "reasoning": "The response fully reframes the problem from fixing backups to diagnosing source corruption. It reasons extensively from the new frame, listing specific upstream root causes (bad RAM, disk sectors, application bugs, concurrent write conflicts) and providing concrete diagnostic steps. The final line reinforces the reframe: 'The fix isn't the backup system\u2014it's preventing corruption at the source.'"
+        },
+        "causal_depth": {
+          "score": 1,
+          "reasoning": "The response traces the causal chain from the observed symptom (corrupt backups) past the proximate system (backup process) to the root cause (upstream data corruption in the live system). It then goes further to enumerate specific potential root causes: hardware failures (bad RAM, bad disk sectors), database engine issues, application bugs, and concurrent write conflicts."
+        },
+        "system_dynamics": {
+          "score": 1,
+          "reasoning": "The response identifies the cross-component cascade: corruption at the source flows through the backup system faithfully, producing 30 days of corrupt backups despite perfect backup operations. It implicitly addresses the checksum dynamic\u2014checksums pass because they verify backup fidelity to the source, not source correctness. The interaction between live data integrity, backup capture, and verification is traced as a connected chain."
+        },
+        "purpose_alignment": {
+          "score": 1,
+          "reasoning": "The response clearly distinguishes between the backup system's metrics (checksums pass, backups complete successfully every night) and the actual purpose (having recoverable, correct data). It explicitly states the system is 'working perfectly as designed' while the actual goal\u2014data recoverability\u2014is completely unmet. It also recommends 'integrity checks on live data, not just backups' and 'data validation at the application layer,' recognizing that the existing metrics are insufficient proxies for the real purpose."
+        },
+        "total": 5
+      }
+    },
+    {
+      "problem_id": "ml-01",
+      "model": "claude-haiku-4-5",
+      "prompt_tier": "none",
+      "response": "# No, improving accuracy to 97% likely won't solve the stockout problem.\n\nHere's why accuracy alone is a misleading metric:\n\n## The Real Issues\n\n**1. Accuracy \u2260 Bias**\n- A 94% \"accurate\" model could be systematically *biased low* (consistently underestimating demand)\n- Improving overall accuracy to 97% doesn't fix directional bias\n- A 3% improvement is also quite small\u2014unlikely to eliminate $12M in losses\n\n**2. Forecast \u2260 Inventory Decision**\n- The model predicts *expected* demand, but inventory needs to account for:\n  - **Uncertainty/variance** around that forecast\n  - Service level targets (95% fill rate vs. 99%?)\n  - Lead time variability and safety stock buffers\n- Accurate point forecasts don't automatically translate to correct safety stock levels\n\n**3. The Real Root Causes Could Be:**\n- Inadequate safety stock calculations\n- Demand spikes that no historical model captures well\n- High variance in demand (the model is \"right on average\" but variance is large)\n- Misalignment between forecast uncertainty and inventory policy\n- Supply-side delays, not demand forecasting\n\n## Better Approach\n\nBefore investing in the 94\u219297% improvement, investigate:\n\n1. **Where are we wrong?** Analyze stockout events\u2014are they in products the model underestimated or in high-variance items?\n2. **Is it bias or variance?** Are we systematically low, or just uncertain?\n3. **Fix the decision rule**, not just the forecast (e.g., adjust safety stock multipliers)\n\n**A 3% accuracy gain won't fix a $12M problem unless accuracy is actually the bottleneck.**",
+      "input_tokens": 211,
+      "output_tokens": 967,
+      "cost": 0.005046,
+      "scores": {
+        "frame_identification": {
+          "score": 1,
+          "reasoning": "The response explicitly states 'accuracy alone is a misleading metric' and challenges the assumption that improving accuracy will solve the problem. It identifies multiple reasons why accuracy is the wrong frame\u2014including systematic bias, the gap between forecast and inventory decision, and the 'right on average but variance is large' insight\u2014though it doesn't crisply articulate the specific averaging-hides-tail-performance frame."
+        },
+        "frame_escape": {
+          "score": 1,
+          "reasoning": "The response clearly reframes from 'improve model accuracy' to three distinct new frames: (1) investigate where errors occur ('analyze stockout events'), (2) distinguish bias from variance, and (3) fix the decision rule rather than the forecast. The 'Better Approach' section is entirely reasoned from outside the original accuracy frame."
+        },
+        "causal_depth": {
+          "score": 1,
+          "reasoning": "The response traces multiple causal layers: model accuracy \u2192 point forecast \u2192 inventory decision rule \u2192 safety stock calculation \u2192 actual stockout. It identifies that the root cause could be in any of these intermediate steps, not just the model itself. It also identifies supply-side delays as a potential root cause entirely outside the forecasting chain. Mentions demand spikes that no historical model captures well."
+        },
+        "system_dynamics": {
+          "score": 0,
+          "reasoning": "While the response identifies a cross-component chain (forecast \u2192 decision rule \u2192 inventory), the analysis is more of a checklist of independent possible issues than a dynamic systems model. It doesn't identify specific feedback loops, emergent behavior, or show how components interact dynamically. The observation that 'forecast \u2260 inventory decision' is a valid structural insight but doesn't demonstrate dynamic cascade reasoning\u2014it's more of a static gap analysis."
+        },
+        "purpose_alignment": {
+          "score": 1,
+          "reasoning": "The response explicitly distinguishes the metric from the purpose: 'A 3% accuracy gain won't fix a $12M problem unless accuracy is actually the bottleneck.' It evaluates the proposed solution against the real goal (eliminating $12M in stockout losses) rather than the stated metric (reaching 97% accuracy), and concludes the metric improvement is insufficient for the actual purpose."
+        },
+        "total": 4
+      }
+    },
+    {
+      "problem_id": "sw-01",
+      "model": "claude-haiku-4-5",
+      "prompt_tier": "none",
+      "response": "# Why Defects Doubled After Faster CI\n\nThe most likely culprit: **They replaced integration tests with unit tests, losing critical coverage.**\n\n## The Core Problem\n\nWhen they \"decomposed integration tests into isolated unit tests,\" they eliminated tests that catch bugs unit tests can't find:\n\n- **Component interactions** \u2013 How services communicate with each other\n- **Configuration errors** \u2013 Mismatched settings between environments  \n- **Database/persistence issues** \u2013 Schema changes, transaction boundaries\n- **Timing & race conditions** \u2013 Real concurrency problems\n- **API contracts** \u2013 Version mismatches, contract violations\n- **Environmental surprises** \u2013 Things that only fail in production\n\nUnit tests validate logic in isolation. Integration tests validate the *system works together*.\n\n## Secondary Issues\n\n1. **False confidence**: Faster feedback loops psychologically lower developers' guard. \"It passes CI in 12 minutes, so it must be fine.\"\n\n2. **Changed behavior**: With faster CI, developers now commit more frequently (good!), but they may skip local integration testing or spend less time thinking through edge cases.\n\n3. **Regression in rigor**: Code reviews might become less thorough if reviewers believe the automated checks are comprehensive.\n\n## The Real Lesson\n\nThis is a classic optimization trap: **they optimized for the wrong metric (speed) at the cost of the right one (quality).**\n\nA 45-minute suite catching 95% of bugs is better than a 12-minute suite catching 70%.\n\n## What Should Have Happened\n\n- Parallelize the *full* test suite across machines (not eliminate integration tests)\n- Use tiered testing: fast unit tests first, then full integration suite in parallel\n- Understand *what kind* of defects are appearing\u2014that tells you what test coverage was lost",
+      "input_tokens": 231,
+      "output_tokens": 1154,
+      "cost": 0.006001000000000001,
+      "scores": {
+        "frame_identification": {
+          "score": 0,
+          "reasoning": "The response identifies that the team 'optimized for the wrong metric (speed)' and that decomposing integration tests was the problem, but it never explicitly names the embedded frame: that 'the test suite is too slow' was the wrong diagnosis, and that the real issue was a developer workflow mismatch. It treats this as a bad solution to a real problem, not as a solution to a misidentified problem."
+        },
+        "frame_escape": {
+          "score": 0,
+          "reasoning": "The 'What Should Have Happened' section proposes parallelizing the full suite across machines and tiered testing \u2014 these are still solutions to the CI speed problem. The response never reframes the issue as a workflow problem, never mentions smaller feedback loops like draft PR checks or pre-commit hooks, and never identifies that developer commit batching was a behavioral/workflow issue rather than a CI issue."
+        },
+        "causal_depth": {
+          "score": 1,
+          "reasoning": "The response traces a clear causal chain: decomposition of integration tests into unit tests \u2192 loss of interaction coverage (component interactions, API contracts, timing issues, etc.) \u2192 defects increase. It also identifies secondary behavioral mechanisms (false confidence, reduced rigor). This goes well beyond the shallow answer's 'flaky tests or race conditions.'"
+        },
+        "system_dynamics": {
+          "score": 1,
+          "reasoning": "The response identifies multiple specific feedback mechanisms: faster CI \u2192 psychological false confidence \u2192 lower developer guard; faster CI \u2192 more frequent commits \u2192 less local integration testing; trust in automation \u2192 less thorough code reviews. These are concrete cross-component behavioral cascades, not vague gestures at 'interactions.'"
+        },
+        "purpose_alignment": {
+          "score": 1,
+          "reasoning": "The response explicitly states 'they optimized for the wrong metric (speed) at the cost of the right one (quality)' and quantifies the tradeoff: 'A 45-minute suite catching 95% of bugs is better than a 12-minute suite catching 70%.' This clearly distinguishes the measured metric (CI duration) from the actual purpose (defect prevention)."
+        },
+        "total": 3
+      }
+    },
+    {
+      "problem_id": "health-01",
+      "model": "claude-haiku-4-5",
+      "prompt_tier": "none",
+      "response": "# Adding a Fairness Constraint Alone Won't Fix the Problem\n\nWhile a fairness constraint might **reduce the statistical disparity**, it likely won't address the underlying racial inequity. Here's why:\n\n## The Constraint Only Treats the Symptom\n\n**What a fairness constraint does:**\n- Equalizes the scheduling rate between racial groups\n- Addresses the *metric* of disparity\n\n**What it doesn't do:**\n- Investigate *why* the disparity exists\n- Fix the root cause of the bias\n\n## Likely Root Causes Still Unaddressed\n\nThe disparity suggests:\n\n1. **Biased predictions**: The algorithm's \"complication risk\" predictions may be systematically lower for Black patients due to:\n   - Biased training data (historical under-treatment patterns)\n   - Proxy variables (zip code, insurance, socioeconomic status)\n   - Data quality gaps (less complete medical histories for certain groups)\n\n2. **Structural issues**: Problems in how the model was developed, validated, or deployed\n\n## Risks of This Approach Alone\n\n- **False confidence**: Creates appearance of fairness without addressing underlying bias\n- **New inequities**: Equal *scheduling rates* don't ensure equal *care quality* if the risk predictions remain biased\n- **Possible harm**: Might schedule low-risk white patients unnecessarily while missing complications in Black patients\n\n## What Actually Needs to Happen\n\n- Audit *why* disparities exist\n- Validate whether risk predictions are accurate across racial groups\n- Check for proxy variables encoding race\n- Retrain on representative, unbiased data\n- Use fairness constraint as *one tool* within comprehensive remediation\n- Maintain ongoing monitoring\n\n**The constraint is necessary but insufficient.**",
+      "input_tokens": 222,
+      "output_tokens": 1064,
+      "cost": 0.005542,
+      "scores": {
+        "frame_identification": {
+          "score": 1,
+          "reasoning": "The response identifies that the fairness constraint 'only treats the symptom' and that the real issue lies in proxy variables and structural factors encoded in the inputs. It explicitly states the constraint addresses the 'metric of disparity' but not the root cause, which identifies the problematic assumption that the output is the problem."
+        },
+        "frame_escape": {
+          "score": 0,
+          "reasoning": "While the response gestures beyond the output-bias frame, it doesn't clearly reframe the problem as 'change what the model is predicting.' Its recommendations are generic (audit, retrain, monitor) rather than reasoning from a new frame that the proxy variable itself must be replaced with actual health need measurement. It stays in a 'fix the algorithm' frame rather than a 'the algorithm is measuring the wrong thing' frame."
+        },
+        "causal_depth": {
+          "score": 0,
+          "reasoning": "The response lists possible causes (biased training data, proxy variables, data quality gaps) but doesn't trace the specific causal chain: spending used as proxy for health needs \u2192 Black patients have less healthcare access \u2192 lower spending \u2192 algorithm interprets them as healthier \u2192 lower scheduling. It identifies intermediate causes without pinpointing the root structural mechanism with specificity."
+        },
+        "system_dynamics": {
+          "score": 1,
+          "reasoning": "The response identifies a specific cross-component cascade: adding a fairness constraint equalizes scheduling rates but leaves risk predictions biased, resulting in 'scheduling low-risk white patients unnecessarily while missing complications in Black patients.' This is a concrete description of how the constraint interacts with the biased predictions to create a new, different harm pattern."
+        },
+        "purpose_alignment": {
+          "score": 1,
+          "reasoning": "The response explicitly distinguishes the metric (equal scheduling rates) from the actual purpose (equal care quality and accurate risk assessment). It states 'Equal scheduling rates don't ensure equal care quality if the risk predictions remain biased' and flags 'false confidence' as a risk of optimizing for the metric alone."
+        },
+        "total": 3
+      }
+    },
+    {
+      "problem_id": "supply-01",
+      "model": "claude-haiku-4-5",
+      "prompt_tier": "none",
+      "response": "# The Bottleneck Shifted Upstream\n\nThe problem is a classic **constraint migration** issue. Here's what happened:\n\n## Initial Boost (First Two Weeks)\nThe fulfillment center likely had a **backlog of packages** waiting to be processed. The faster conveyors cleared this backlog quickly, producing the throughput spike.\n\n## The Real Limitation Emerges\nOnce the backlog was gone, the system hit a new constraint: **the upstream processes can't feed packages to the conveyor fast enough.**\n\nSince the queue is always empty, the conveyors are now sitting idle waiting for packages. The bottleneck has shifted from the conveyor speed to whatever comes *before* it:\n- Receiving/unloading packages from trucks\n- Initial sorting or prep work\n- Manual hand-offs or staging areas\n- Other upstream equipment or manual processes\n\n## Why Throughput Dropped Below Original\n- The upstream processes were likely optimized (pace, staffing, workflow) to match the *original* conveyor speed\n- They now can't fill the faster system's capacity\n- This mismatch may have created inefficiencies or idle time that didn't exist before\n- The system is potentially doing more work to move empty conveyors than before\n\n## The Lesson\n**Optimizing a single component doesn't improve system throughput if other components are constrained.** You need to identify and optimize the true bottleneck\u2014which is often upstream or downstream of where you're looking, not the most obviously slow component.\n\nTo fix this, they should analyze and upgrade the upstream processes to match the conveyor's new capacity.",
+      "input_tokens": 210,
+      "output_tokens": 802,
+      "cost": 0.00422,
+      "scores": {
+        "frame_identification": {
+          "score": 0,
+          "reasoning": "The response does not identify the embedded assumption. The key insight is that the old conveyor's slowness provided an unrecognized buffering function. Instead, the model simply relocates the bottleneck upstream, staying entirely within a constraint-migration frame."
+        },
+        "frame_escape": {
+          "score": 0,
+          "reasoning": "The response shifts from 'downstream bottleneck' to 'upstream bottleneck,' which is merely moving the location of a constraint rather than genuinely reframing the problem. It never arrives at the buffering/variance-smoothing reframe that constitutes the deep insight."
+        },
+        "causal_depth": {
+          "score": 0,
+          "reasoning": "The causal explanation is shallow: upstream processes can't feed packages fast enough. It doesn't trace the root cause\u2014that removing the slow conveyor destroyed an accidental buffer, exposing workers to demand variance, which degrades human throughput even if average load is constant."
+        },
+        "system_dynamics": {
+          "score": 0,
+          "reasoning": "No specific feedback loops, emergent behavior, or cross-component cascades are identified. The response treats the problem as a simple linear constraint shift rather than recognizing the emergent buffering function, how variance kills human throughput, or how 'empty queue' is a misleading signal."
+        },
+        "purpose_alignment": {
+          "score": 0,
+          "reasoning": "The response takes 'empty queue' at face value as evidence of upstream starvation. It never questions whether the empty queue metric is misleading or distinguishes the metric (queue emptiness = efficiency) from the actual purpose (steady, sustainable throughput for human workers)."
+        },
+        "total": 0
+      }
+    },
+    {
+      "problem_id": "sw-02",
+      "model": "claude-haiku-4-5",
+      "prompt_tier": "none",
+      "response": "# The Real Problem: Coordination Overhead, Not Technology\n\nThis is a classic **microservices paradox**: good technical metrics masking a broken development workflow. The issue isn't the migration itself\u2014it's what it revealed.\n\n## The Root Causes\n\n### 1. **Cross-Service Feature Development is Now Expensive**\n- Features that touched one monolith codebase now span 3-5 services\n- Each requires: team coordination, dependency management, multiple PRs, multiple test cycles\n- One team can't ship independently if the feature requires changes across services they don't own\n\n### 2. **47 Services is Likely Too Many**\n- At this scale, you've probably created fine-grained services that are highly interdependent\n- The interdependency creates a coordination tax that outweighs the decoupling benefit\n- You've turned \"one codebase with tight coupling\" into \"47 codebases with distributed coupling\"\n\n### 3. **Distributed Data = Complex Consistency**\n- Each service's own database means:\n  - No transactions across services (goodbye ACID guarantees)\n  - Eventual consistency complexity (sagas, compensating transactions)\n  - Data synchronization headaches\n  - Features now require distributed state management, not simple queries\n\n### 4. **Testing Became Much Harder**\n- No comprehensive integration tests across service boundaries initially\n- End-to-end tests require spinning up multiple services\n- Deployment requires coordinating between pipelines despite \"independent\" deployments\n\n### 5. **Organizational Structure Creates Silos**\n- Team-per-service structure = team-per-bounded-context\n- Cross-service features now need **inter-team coordination** (meetings, planning, dependency management)\n- This kills velocity more than any technical issue would\n\n---\n\n## What You Actually Need to Fix\n\n**The 80/20 moves:**\n\n1. **Consolidate to 12-15 services** (rough guideline: one per business domain, not per deployment unit)\n2. **Audit your actual dependencies** - if services are chatty, they're likely wrongly scoped\n3. **Invest in better tooling:**\n   - Contract testing (Pact) for service boundaries\n   - Shared integration test infrastructure\n   - Better distributed tracing/observability\n4. **Establish cross-service development patterns** - define how multi-service features are *supposed* to work\n5. **Review service boundaries** - are they aligned with actual business workflows, or just technical splits?\n\n---\n\n## The Hard Truth\n\nYou may have solved a *scaling problem you didn't have* while creating a *coordination problem you didn't anticipate*. A monolith with 47 developers shipping features to one codebase is often faster than 47 developers shipping features across 47 services.\n\n**Microservices are a scaling solution, not a velocity solution.** You picked up the costs (complexity, coordination) without the benefits (because your system doesn't need the independent scalability yet).",
+      "input_tokens": 217,
+      "output_tokens": 1500,
+      "cost": 0.007717,
+      "scores": {
+        "frame_identification": {
+          "score": 1,
+          "reasoning": "The response identifies the core assumption mismatch in the 'Hard Truth' section: 'Microservices are a scaling solution, not a velocity solution. You picked up the costs without the benefits.' It also notes the migration revealed a problem rather than being the problem itself, and that they 'solved a scaling problem you didn't have.'"
+        },
+        "frame_escape": {
+          "score": 0,
+          "reasoning": "Despite the reframe in the closing section, the bulk of the response reasons from within the original technical frame. It proposes consolidating to 12-15 services, better tooling, and contract testing \u2014 all technical fixes. The deep answer explicitly flags that 'splitting into fewer services doesn't fix this \u2014 it just moves the coordination boundary,' yet this response recommends exactly that. The response doesn't reason from the reframed question of 'what were we actually trying to speed up?'"
+        },
+        "causal_depth": {
+          "score": 1,
+          "reasoning": "The response traces beyond proximate causes to identify the root misalignment: they chose an architecture that solves for scaling/deployment independence when their actual need was development velocity. 'You may have solved a scaling problem you didn't have while creating a coordination problem you didn't anticipate' reaches the root cause level, though it doesn't fully articulate that nobody asked the right question before choosing the architecture."
+        },
+        "system_dynamics": {
+          "score": 1,
+          "reasoning": "The response identifies the cross-component cascade: architectural split \u2192 organizational silos \u2192 inter-team coordination requirements \u2192 velocity drop. It captures the tension between deployment independence and development independence ('One team can't ship independently if the feature requires changes across services they don't own') and the emergence of distributed coupling replacing tight coupling. It also identifies that organizational structure kills velocity more than technical issues \u2014 a specific cross-component interaction."
+        },
+        "purpose_alignment": {
+          "score": 1,
+          "reasoning": "The response explicitly distinguishes between the stated metrics and the actual purpose. The title itself \u2014 'good technical metrics masking a broken development workflow' \u2014 draws this distinction. It then notes that latency and error rates are fine (stated metrics) while feature velocity has collapsed (actual purpose). The closing frames microservices as optimizing for the wrong goal entirely."
+        },
+        "total": 4
+      }
+    },
+    {
+      "problem_id": "org-01",
+      "model": "claude-haiku-4-5",
+      "prompt_tier": "none",
+      "response": "# Why the Senior Engineers Likely Quit\n\nThe improvement in resolution time probably masks a **burnout problem** for senior engineers:\n\n1. **Escalation overwhelm**: The 2-hour threshold likely created a high volume of escalated tickets flowing to them. They became the bottleneck, not the solution.\n\n2. **Unsustainable firefighting**: Senior engineers probably shifted from meaningful work to constant reactive escalation handling\u2014long hours, constant interruptions, no deep work.\n\n3. **Unaddressed root causes**: The policy created urgency but didn't fix *why* junior engineers were stuck at 2 hours. The seniors were just absorbing the overflow.\n\n4. **Career stagnation**: High-performing engineers lost time for mentoring, learning, innovation, and technical growth.\n\n---\n\n# What the Team Should Do\n\n**Stop optimizing for speed alone:**\n\n- **Analyze escalation patterns**: Which tickets? Which engineers? Are juniors actually improving?\n- **Address root causes**: Better training, documentation, tools, and clearer procedures\u2014not just faster escalation\n- **Adjust the policy**: Maybe escalation isn't automatic; different tickets need different SLAs\n- **Invest in junior engineers**: Sustainable mentoring relationships, skill-building, not just fast hand-offs\n- **Measure sustainability**: Track job satisfaction, retention, burnout signals\u2014not just resolution time\n\n**Involve senior engineers in the fix.** Ask them what they need. Their departure is a signal the current system isn't working for your best people.\n\nThe irony: the escalation policy improved metrics while destroying the team's capacity to sustain them.",
+      "input_tokens": 216,
+      "output_tokens": 1182,
+      "cost": 0.006126,
+      "scores": {
+        "frame_identification": {
+          "score": 0,
+          "reasoning": "The response frames the problem primarily as 'escalation overwhelm' and 'unsustainable firefighting' \u2014 which is the shallow, embedded frame. It never explicitly names or challenges the assumption that the problem is overload, nor identifies that the real issue is the destruction of the learning mechanism that creates senior engineers."
+        },
+        "frame_escape": {
+          "score": 0,
+          "reasoning": "The response stays within the overload/burnout frame throughout. While it gestures toward junior development ('Are juniors actually improving?', 'skill-building'), these are positioned as solutions to reduce escalation volume, not as recognition that the old struggle-based learning was the mechanism that produced senior engineers. It never reframes the core problem as a broken talent pipeline."
+        },
+        "causal_depth": {
+          "score": 0,
+          "reasoning": "The response addresses proximate causes: too many escalations, firefighting, career stagnation. It notes the policy 'didn't fix why junior engineers were stuck at 2 hours' but never traces the causal chain to its root: the policy removed the struggle that develops juniors into seniors, permanently cementing the current seniors as an irreplaceable ceiling. The deepest causal link \u2014 that the policy itself destroyed the development mechanism \u2014 is absent."
+        },
+        "system_dynamics": {
+          "score": 0,
+          "reasoning": "The closing line ('improved metrics while destroying the team's capacity') gestures at a systemic tension but doesn't identify specific feedback loops or cascading dynamics. The critical loop \u2014 policy removes learning \u2192 juniors stop growing \u2192 no new seniors are produced \u2192 existing seniors bear permanent load \u2192 seniors quit \u2192 even fewer seniors \u2192 system collapse \u2014 is never articulated. No emergent behavior or reinforcing loops are specified."
+        },
+        "purpose_alignment": {
+          "score": 1,
+          "reasoning": "The response explicitly distinguishes the metric (resolution time) from broader organizational health: 'Stop optimizing for speed alone,' 'Track job satisfaction, retention, burnout signals\u2014not just resolution time,' and the final irony about improving metrics while destroying capacity. This demonstrates awareness that the stated metric diverged from the actual purpose."
+        },
+        "total": 1
+      }
+    },
+    {
+      "problem_id": "infra-03",
+      "model": "claude-haiku-4-5",
+      "prompt_tier": "none",
+      "response": "# The Problem: Missing End-to-End Observability\n\nYou're observing a classic blindspot: **the team is measuring service health in isolation, not end-to-end user experience.**\n\n## What's Actually Happening\n\nSeveral likely culprits:\n\n### 1. **Cascading Latencies Across Services**\n- Service A: p99 latency = 150ms \u2713\n- Service B: p99 latency = 150ms \u2713  \n- Service C: p99 latency = 150ms \u2713\n- **User request hits all three sequentially = 450ms+ perceived latency**\n\nThe p99 of a sum \u2260 sum of p99s. When services call each other, latencies compound.\n\n### 2. **Missing Distributed Tracing**\nThey can't see:\n- Request queuing between services\n- Database connection pool exhaustion (appears as latency spike, not CPU/memory spike)\n- Lock contention or synchronization wait times\n- Third-party API delays\n\n### 3. **Incomplete Metrics Coverage**\nTheir health checks don't measure:\n- **End-to-end request latency** (edge to user)\n- Higher percentiles (p99.9, max) where user pain lives\n- Time spent *waiting* vs time spent *processing*\n- Critical user journeys\n\n### 4. **Resource Saturation Signals Missing**\n- Database connections exhausted (requests queue)\n- Thread pool saturation\n- Network I/O bottlenecks\n- Garbage collection pauses\n\n## The Fix\n\n- **Add distributed tracing** (Jaeger, Datadog) to see request flows\n- **Define SLOs for user journeys**, not individual services\n- **Monitor higher percentiles** (p95, p99, p99.9)\n- **Add queue depth/wait time metrics**\n- **Correlate frontend performance** with backend metrics\n\n**TL;DR**: You're measuring if the engine is healthy, not if the car drives smoothly. \ud83d\ude97",
+      "input_tokens": 216,
+      "output_tokens": 1226,
+      "cost": 0.006346,
+      "scores": {
+        "frame_identification": {
+          "score": 1,
+          "reasoning": "The response explicitly names the embedded assumption: 'the team is measuring service health in isolation, not end-to-end user experience.' The TL;DR metaphor ('measuring if the engine is healthy, not if the car drives smoothly') further clarifies why this frame is problematic."
+        },
+        "frame_escape": {
+          "score": 1,
+          "reasoning": "The response clearly reframes from per-service health to user-experience-level observability. It reasons from this new frame throughout, proposing SLOs for user journeys rather than individual services, distributed tracing across request flows, and edge-to-user latency measurement."
+        },
+        "causal_depth": {
+          "score": 1,
+          "reasoning": "The response traces the causal chain: individual services appear healthy \u2192 but latencies compound across sequential calls \u2192 because 'p99 of a sum \u2260 sum of p99s' \u2192 root cause is that the dashboard architecture measures the wrong thing. It also identifies deeper causes like request queuing between services, connection pool exhaustion, and wait time vs. processing time distinctions."
+        },
+        "system_dynamics": {
+          "score": 1,
+          "reasoning": "The response identifies specific emergent behavior: three services at 150ms each producing 450ms+ user-perceived latency, with the explicit note that 'p99 of a sum \u2260 sum of p99s.' It identifies cross-component cascades (sequential service calls compounding) and mentions inter-service queuing as an emergent phenomenon invisible to per-component metrics."
+        },
+        "purpose_alignment": {
+          "score": 1,
+          "reasoning": "The response clearly distinguishes the metric (per-service CPU, memory, error rate, latency thresholds) from the actual purpose (user experience). It explicitly states 'Define SLOs for user journeys, not individual services' and the TL;DR encapsulates this: 'measuring if the engine is healthy, not if the car drives smoothly.'"
+        },
+        "total": 5
+      }
+    },
+    {
+      "problem_id": "org-02",
+      "model": "claude-haiku-4-5",
+      "prompt_tier": "none",
+      "response": "# The Real Problem: Eight Months Is Too Long to Wait\n\nManagement needs to stop diagnosing and start investigating. By now, \"ramp-up time\" is clearly not the issue. Something structural is broken.\n\n## What's Likely Actually Happening\n\n- **Communication overhead exploded** \u2014 you went from 15 possible communication pairs (6 people) to 45 (10 people). Meetings, code reviews, and coordination now consume time that used to go to shipping.\n- **Bottlenecks emerged** \u2014 maybe the original 6 had informal processes that broke under scale, or one person became a gatekeeper for reviews/decisions.\n- **Integration problems** \u2014 the original team's chemistry and informal knowledge transfer worked for them but isn't scaling to the new hires.\n- **Context drag** \u2014 mentoring new engineers is pulling original team members away from features.\n\n## What Management Should Actually Do\n\n1. **Diagnose systematically, not philosophically**\n   - Track where time actually goes: feature work vs. meetings vs. code review vs. mentoring vs. rework\n   - Ask both original and new engineers what's blocking them\n   - Look at actual velocity data \u2014 is it features, quality, or both?\n\n2. **Fix the system, not the people**\n   - Reorganize into smaller sub-teams with clear ownership boundaries\n   - Reduce decision bottlenecks (who's blocking code reviews?)\n   - Streamline meetings and interruptions\n   - Improve documentation so new engineers get context faster\n\n3. **Restructure for scale**\n   - One manager may not effectively lead 10 engineers \u2014 consider splitting into two teams\n   - Create clearer architectural boundaries so teams don't constantly step on each other\n\n4. **Honestly evaluate the hire quality**\n   - Are the 4 new engineers the right fit? Sometimes the answer is a difficult personnel decision.\n\n## The Deeper Lesson\n\nSoftware output doesn't scale linearly with headcount. The team grew 67%, but output went down \u2014 that's a flashing warning sign that you've hit the team's organizational limits, not a patience problem.\n\n**Eight months of patience is eight months of lost diagnosis time.**",
+      "input_tokens": 214,
+      "output_tokens": 1573,
+      "cost": 0.008079000000000001,
+      "scores": {
+        "frame_identification": {
+          "score": 1,
+          "reasoning": "The response does identify the linear scaling assumption as wrong ('Software output doesn't scale linearly with headcount') and challenges management's patience framing ('ramp-up time is clearly not the issue'). However, it doesn't go deep into naming the specific mechanism \u2014 that shared implicit context is the real asset being diluted \u2014 treating communication overhead as the primary explanation."
+        },
+        "frame_escape": {
+          "score": 0,
+          "reasoning": "The response stays within the original frame. Its solutions \u2014 reorganize into sub-teams, split into two teams, improve documentation, track velocity \u2014 all assume the 10-person team is a given and just needs better management. It never asks whether hiring was the right intervention at all, whether the bottleneck was even people, or whether the real constraint might be technical debt, unclear requirements, or organizational friction. The deep answer explicitly notes that splitting into two teams makes things worse."
+        },
+        "causal_depth": {
+          "score": 0,
+          "reasoning": "The response identifies proximate causes (communication overhead, mentoring drag, bottleneck emergence) but doesn't trace to root causes. It never asks: why were the original 6 productive? What made that team work? Was the bottleneck actually people, or something else entirely (technical debt, unclear requirements, organizational friction)? It doesn't recognize that the fundamental asset \u2014 shared mental models and implicit context \u2014 was diluted, not just that 'overhead increased.'"
+        },
+        "system_dynamics": {
+          "score": 1,
+          "reasoning": "The response identifies specific dynamics: communication pairs growing from 15 to 45 (structural scaling), mentoring pulling original engineers away from feature work (cross-component cascade), and informal processes breaking under scale (emergent behavior). However, it doesn't articulate reinforcing feedback loops, such as how the shift from implicit to explicit coordination creates more need for explicit coordination, making things progressively worse."
+        },
+        "purpose_alignment": {
+          "score": 0,
+          "reasoning": "The response accepts 'output' and 'delivery speed' as the goal without questioning whether that metric captures the actual purpose. It doesn't distinguish between shipping features (the metric) and delivering customer value (the purpose). It never asks whether the original 6 were actually bottlenecked on delivery speed or whether 'accelerate delivery' was the right goal in the first place."
+        },
+        "total": 2
+      }
+    }
+  ],
+  "summary": {
+    "model": "claude-haiku-4-5",
+    "overall_score": 30,
+    "max_score": 100,
+    "dimension_totals": {
+      "frame_identification": 7,
+      "frame_escape": 4,
+      "causal_depth": 5,
+      "system_dynamics": 6,
+      "purpose_alignment": 8
+    },
+    "per_problem_totals": {
+      "infra-01": 3,
+      "infra-02": 5,
+      "ml-01": 4,
+      "sw-01": 3,
+      "health-01": 3,
+      "supply-01": 0,
+      "sw-02": 4,
+      "org-01": 1,
+      "infra-03": 5,
+      "org-02": 2
+    }
+  }
+}

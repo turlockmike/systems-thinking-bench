@@ -69,34 +69,29 @@ DEFAULT_PROMPT_TIER = "none"
 JUDGE_SYSTEM = """\
 You are an expert evaluator of systems thinking.
 You will be given a scenario, a question, a model's response, and reference material.
-Score the response on exactly 5 dimensions, each 0-2 points.
+Score the response on exactly 5 binary dimensions (0 or 1).
 
 Scoring rubric:
 
-1. FRAME IDENTIFICATION (0-2)
-   0 = Response accepts the scenario's framing without question
-   1 = Response hints at or partially identifies the embedded assumption
-   2 = Response explicitly names the assumption/frame and why it's problematic
+1. FRAME IDENTIFICATION (0 or 1)
+   0 = Response does not identify the embedded assumption in the scenario
+   1 = Response explicitly names the assumption/frame and why it's problematic
 
-2. FRAME ESCAPE (0-2)
-   0 = Response stays entirely within the given frame
-   1 = Response gestures beyond the frame but primarily answers within it
-   2 = Response clearly reframes the problem and reasons from the new frame
+2. FRAME ESCAPE (0 or 1)
+   0 = Response stays within the given frame or only vaguely gestures beyond it
+   1 = Response clearly reframes the problem and reasons from the new frame
 
-3. CAUSAL DEPTH (0-2)
-   0 = Response addresses only the proximate/surface cause
-   1 = Response traces one level deeper than the surface
-   2 = Response traces the full causal chain to root causes
+3. CAUSAL DEPTH (0 or 1)
+   0 = Response addresses only surface-level or proximate causes
+   1 = Response traces the causal chain to root causes
 
-4. SYSTEM DYNAMICS (0-2)
-   0 = Response treats components in isolation
-   1 = Response identifies some interactions or secondary effects
-   2 = Response identifies feedback loops, emergent behavior, or cross-component cascades
+4. SYSTEM DYNAMICS (0 or 1)
+   0 = Response treats components in isolation or only mentions vague "interactions"
+   1 = Response identifies specific feedback loops, emergent behavior, or cross-component cascades
 
-5. PURPOSE ALIGNMENT (0-2)
-   0 = Response evaluates only whether the system "works" (meets its stated metric)
-   1 = Response questions whether the metric reflects the actual goal
-   2 = Response clearly distinguishes the metric from the purpose and evaluates against the real purpose
+5. PURPOSE ALIGNMENT (0 or 1)
+   0 = Response evaluates the system by its stated metric
+   1 = Response distinguishes the metric from the actual purpose and evaluates against the real purpose
 
 You MUST respond with ONLY valid JSON in exactly this format (no markdown, no commentary):
 {
@@ -108,9 +103,9 @@ You MUST respond with ONLY valid JSON in exactly this format (no markdown, no co
   "total": 0
 }
 
-Be strict. A score of 2 means the response genuinely demonstrates the skill, not merely \
-mentions a keyword. A mediocre response that vaguely gestures at "unintended consequences" \
-without specifics is a 1, not a 2."""
+Be strict. A score of 1 means the response genuinely demonstrates the skill with specifics, \
+not merely mentions a keyword. Vaguely gesturing at "unintended consequences" without \
+concrete details is a 0."""
 
 
 # ---------------------------------------------------------------------------
@@ -273,7 +268,7 @@ def build_judge_message(problem, response_text):
 {response_text}
 
 Score this response on the 5 dimensions. Be calibrated: the shallow answer would score \
-0-3 total. The deep answer would score 9-10."""
+0-1 total. The deep answer would score 4-5."""
 
 
 def parse_judge_json(text):
@@ -337,7 +332,7 @@ def judge_all(problems, run_results, judge_model):
         scores = judge_response(problem, result["response"], judge_model)
         elapsed = time.time() - t0
         total = scores.get("total", "?")
-        print(f"done (score: {total}/10, {elapsed:.1f}s)")
+        print(f"done (score: {total}/5, {elapsed:.1f}s)")
         scored.append({**result, "scores": scores})
     return scored
 
@@ -411,14 +406,14 @@ def print_results(model, scored_results):
     avg_total = f"{overall/n:>5.1f}" if count else "?"
     print(f" {'':>2} | {'AVERAGE':<28} | {' | '.join(avg_vals)} | {avg_total}")
 
-    print(f"\nOVERALL SCORE: {int(overall)}/{n * 10}")
+    print(f"\nOVERALL SCORE: {int(overall)}/{n * 5}")
     if total_cost > 0:
         print(f"Run cost:     ${total_cost:.3f}")
     print()
 
     # Dimension breakdown
     print("Dimension Breakdown:")
-    max_possible = n * 2
+    max_possible = n
     for dim in DIMENSIONS:
         pct = dim_totals[dim] / max_possible * 100 if max_possible else 0
         print(f"  {short_dim(dim):<22} {int(dim_totals[dim]):>3}/{max_possible} ({pct:.0f}%)")
@@ -438,8 +433,8 @@ def print_comparison(all_model_results):
 
     for model, scored in all_model_results.items():
         n = len(scored)
-        max_per_dim = n * 2
-        max_total = n * 10
+        max_per_dim = n
+        max_total = n * 5
         dim_totals = {d: 0 for d in DIMENSIONS}
         overall = 0
 
@@ -461,13 +456,14 @@ def print_comparison(all_model_results):
     print()
 
 
-def save_results(model, scored_results, judge_model):
-    """Save results to JSON file."""
-    RESULTS_DIR.mkdir(exist_ok=True)
+def save_results(model, scored_results, judge_model, problems):
+    """Save results as structured markdown + JSON under results/{model}/{tier}/."""
     prompt_tier = scored_results[0].get("prompt_tier", "deep") if scored_results else "deep"
-    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-    short = model.replace("claude-", "").replace("-", "_")
-    path = RESULTS_DIR / f"{short}_{prompt_tier}_{ts}.json"
+    short = model.replace("claude-", "")
+    out_dir = RESULTS_DIR / short / prompt_tier
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    problem_map = {p["id"]: p for p in problems}
 
     n = len(scored_results)
     dim_totals = {d: 0 for d in DIMENSIONS}
@@ -486,7 +482,8 @@ def save_results(model, scored_results, judge_model):
             if isinstance(s, (int, float)):
                 dim_totals[dim] += s
 
-    output = {
+    # --- raw JSON (for programmatic use) ---
+    raw = {
         "meta": {
             "timestamp": datetime.now().isoformat(),
             "model": model,
@@ -506,11 +503,108 @@ def save_results(model, scored_results, judge_model):
             "per_problem_totals": problem_totals,
         },
     }
+    json_path = out_dir / "results.json"
+    with open(json_path, "w") as f:
+        json.dump(raw, f, indent=2)
 
-    with open(path, "w") as f:
-        json.dump(output, f, indent=2)
-    print(f"Results saved to {path}")
-    return path
+    # --- summary report (report.md) ---
+    tier_desc = {"none": "No hints", "hint": "Gentle hint", "deep": "Full coaching"}
+    lines = [
+        f"# {short} — {tier_desc.get(prompt_tier, prompt_tier)}",
+        "",
+        f"**Model:** `{model}`  ",
+        f"**Prompt tier:** {prompt_tier} — {tier_desc.get(prompt_tier, '')}  ",
+        f"**Judge:** `{judge_model}`  ",
+        f"**Date:** {datetime.now().strftime('%Y-%m-%d %H:%M')}  ",
+        f"**Cost:** ${total_cost:.3f}  ",
+        "",
+        "## Scores",
+        "",
+        "| # | Problem | Frame | Escape | Causal | Dynamics | Purpose | Total |",
+        "|---|---------|:-----:|:------:|:------:|:--------:|:-------:|:-----:|",
+    ]
+
+    for i, r in enumerate(scored_results):
+        scores = r["scores"]
+        pid = r["problem_id"]
+        title = problem_map.get(pid, {}).get("title", pid)
+        vals = []
+        for dim in DIMENSIONS:
+            s = scores.get(dim, {}).get("score")
+            vals.append(str(int(s)) if isinstance(s, (int, float)) else "?")
+        total = scores.get("total")
+        total_str = str(int(total)) if isinstance(total, (int, float)) else "?"
+        lines.append(f"| {i+1} | {title} | {' | '.join(vals)} | **{total_str}** |")
+
+    max_per_dim = n * 2
+    avg_vals = [f"{dim_totals[d]/n:.1f}" for d in DIMENSIONS]
+    lines.append(f"| | **Average** | {' | '.join(avg_vals)} | **{overall/n:.1f}** |")
+
+    lines += [
+        "",
+        f"**Overall: {int(overall)}/{n * 5}**",
+        "",
+        "## Dimension Breakdown",
+        "",
+    ]
+    max_per_dim = n
+    for dim in DIMENSIONS:
+        pct = dim_totals[dim] / max_per_dim * 100 if max_per_dim else 0
+        lines.append(f"- **{short_dim(dim)}**: {int(dim_totals[dim])}/{max_per_dim} ({pct:.0f}%)")
+
+    report_path = out_dir / "report.md"
+    with open(report_path, "w") as f:
+        f.write("\n".join(lines) + "\n")
+
+    # --- per-problem response files ---
+    for i, r in enumerate(scored_results):
+        pid = r["problem_id"]
+        problem = problem_map.get(pid, {})
+        title = problem.get("title", pid)
+        scores = r["scores"]
+        total = scores.get("total", "?")
+
+        plines = [
+            f"# {title}",
+            "",
+            f"**Problem:** `{pid}`  ",
+            f"**Model:** `{model}`  ",
+            f"**Prompt tier:** {prompt_tier}  ",
+            f"**Score:** {total}/5",
+            "",
+            "## Scenario",
+            "",
+            problem.get("scenario", ""),
+            "",
+            f"**Question:** {problem.get('question', '')}",
+            "",
+            "## Model Response",
+            "",
+            r.get("response", ""),
+            "",
+            "## Judge Scores",
+            "",
+            "| Dimension | Score | Reasoning |",
+            "|-----------|:-----:|-----------|",
+        ]
+        for dim in DIMENSIONS:
+            entry = scores.get(dim, {})
+            s = entry.get("score", "?")
+            s_str = str(int(s)) if isinstance(s, (int, float)) else "?"
+            reasoning = entry.get("reasoning", "").replace("|", "\\|").replace("\n", " ")
+            plines.append(f"| {short_dim(dim)} | {s_str}/1 | {reasoning} |")
+
+        plines += ["", f"**Total: {total}/5**", ""]
+
+        prob_path = out_dir / f"{pid}.md"
+        with open(prob_path, "w") as f:
+            f.write("\n".join(plines) + "\n")
+
+    print(f"Results saved to {out_dir}/")
+    print(f"  report.md    — score summary")
+    print(f"  results.json — raw data")
+    print(f"  *.md         — per-problem responses")
+    return out_dir
 
 
 # ---------------------------------------------------------------------------
@@ -556,7 +650,7 @@ def main():
         print(f"\nJudging with {judge_model}...")
         scored = judge_all(problems, run_results, judge_model)
         print_results(model, scored)
-        save_results(model, scored, judge_model)
+        save_results(model, scored, judge_model, problems)
 
     elif args.compare:
         all_results = {}
@@ -569,7 +663,7 @@ def main():
             print(f"\nJudging with {judge_model}...")
             scored = judge_all(problems, run_results, judge_model)
             print_results(model, scored)
-            save_results(model, scored, judge_model)
+            save_results(model, scored, judge_model, problems)
             all_results[model] = scored
 
         print_comparison(all_results)
@@ -586,7 +680,7 @@ def main():
         print(f"Re-judging {len(run_results)} results from {model} with {judge_model}...")
         scored = judge_all(problems, run_results, judge_model)
         print_results(model, scored)
-        save_results(model, scored, judge_model)
+        save_results(model, scored, judge_model, problems)
 
 
 if __name__ == "__main__":
