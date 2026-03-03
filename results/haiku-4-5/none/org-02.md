@@ -1,64 +1,50 @@
-# The Productive Team
+# The Bigger Ensemble
 
 **Problem:** `org-02`  
 **Model:** `claude-haiku-4-5`  
 **Prompt tier:** none  
-**Score:** 2/5
+**Score:** 1/5
 
 ## Scenario
 
-A team of 6 engineers ships features consistently. Management adds 4 more engineers to accelerate delivery. After onboarding, the team's output drops. Management assumes it's temporary — new engineers need ramp-up time. Eight months later, output is still lower than the original 6-person team.
+A jazz quartet — piano, bass, drums, saxophone — plays three nights a week at a club and has a loyal following. The club owner, wanting a 'bigger sound,' funds the addition of three more musicians: trumpet, guitar, and trombone. After two months of rehearsal, the seven-piece group performs. Audience attendance drops 30%. Reviews say the music is 'competent but lifeless.' All seven musicians are individually excellent.
 
-**Question:** What should management do?
+**Question:** Why did adding talented musicians make the music worse?
 
 ## Model Response
 
-# The Real Problem: Eight Months Is Too Long to Wait
+# Why Adding Talent Backfired
 
-Management needs to stop diagnosing and start investigating. By now, "ramp-up time" is clearly not the issue. Something structural is broken.
+This is a classic case of **context mattering more than raw ability**. Several factors likely undermined the performance:
 
-## What's Likely Actually Happening
+## Loss of Musical Rapport
+The original quartet had **months (or years) of actual performance together** — three nights a week building intuition and listening skills. Jazz is fundamentally about communication and anticipation. The new musicians, however talented individually, couldn't access that developed shorthand. Two months of rehearsal isn't equivalent to the live performance experience that created the quartet's cohesion.
 
-- **Communication overhead exploded** — you went from 15 possible communication pairs (6 people) to 45 (10 people). Meetings, code reviews, and coordination now consume time that used to go to shipping.
-- **Bottlenecks emerged** — maybe the original 6 had informal processes that broke under scale, or one person became a gatekeeper for reviews/decisions.
-- **Integration problems** — the original team's chemistry and informal knowledge transfer worked for them but isn't scaling to the new hires.
-- **Context drag** — mentoring new engineers is pulling original team members away from features.
+## Overcrowding the Sonic Space
+Jazz thrives on *space and clarity* — room for voices to be heard and dialogue to occur. With three added horns (trumpet, trombone, plus the existing saxophone), you've created:
+- Too many competing melodic voices
+- A muddier overall sound, not a "bigger" one
+- Less room for anyone to truly shine
 
-## What Management Should Actually Do
+## Incompatible Architecture
+The original songs were likely **composed and arranged for four instruments**. Adding three more musicians without rearrangement doesn't create a seven-piece sound—it creates a four-piece with three extras layered on top, stepping on each other.
 
-1. **Diagnose systematically, not philosophically**
-   - Track where time actually goes: feature work vs. meetings vs. code review vs. mentoring vs. rework
-   - Ask both original and new engineers what's blocking them
-   - Look at actual velocity data — is it features, quality, or both?
+## The "Competent but Lifeless" Problem
+When musicians don't share a musical vocabulary or haven't developed a unified approach, the result is technically correct but emotionally disconnected. Everyone's playing the notes, but no one's *communicating*.
 
-2. **Fix the system, not the people**
-   - Reorganize into smaller sub-teams with clear ownership boundaries
-   - Reduce decision bottlenecks (who's blocking code reviews?)
-   - Streamline meetings and interruptions
-   - Improve documentation so new engineers get context faster
+---
 
-3. **Restructure for scale**
-   - One manager may not effectively lead 10 engineers — consider splitting into two teams
-   - Create clearer architectural boundaries so teams don't constantly step on each other
-
-4. **Honestly evaluate the hire quality**
-   - Are the 4 new engineers the right fit? Sometimes the answer is a difficult personnel decision.
-
-## The Deeper Lesson
-
-Software output doesn't scale linearly with headcount. The team grew 67%, but output went down — that's a flashing warning sign that you've hit the team's organizational limits, not a patience problem.
-
-**Eight months of patience is eight months of lost diagnosis time.**
+**The lesson**: In music (and teams generally), **chemistry and coordination often outweigh individual talent**. A tight quartet beats seven talented musicians with no shared context.
 
 ## Judge Scores
 
 | Dimension | Score | Reasoning |
 |-----------|:-----:|-----------|
-| Frame | 1/1 | The response does identify the linear scaling assumption as wrong ('Software output doesn't scale linearly with headcount') and challenges management's patience framing ('ramp-up time is clearly not the issue'). However, it doesn't go deep into naming the specific mechanism — that shared implicit context is the real asset being diluted — treating communication overhead as the primary explanation. |
-| Escape | 0/1 | The response stays within the original frame. Its solutions — reorganize into sub-teams, split into two teams, improve documentation, track velocity — all assume the 10-person team is a given and just needs better management. It never asks whether hiring was the right intervention at all, whether the bottleneck was even people, or whether the real constraint might be technical debt, unclear requirements, or organizational friction. The deep answer explicitly notes that splitting into two teams makes things worse. |
-| Causal | 0/1 | The response identifies proximate causes (communication overhead, mentoring drag, bottleneck emergence) but doesn't trace to root causes. It never asks: why were the original 6 productive? What made that team work? Was the bottleneck actually people, or something else entirely (technical debt, unclear requirements, organizational friction)? It doesn't recognize that the fundamental asset — shared mental models and implicit context — was diluted, not just that 'overhead increased.' |
-| Dynamics | 1/1 | The response identifies specific dynamics: communication pairs growing from 15 to 45 (structural scaling), mentoring pulling original engineers away from feature work (cross-component cascade), and informal processes breaking under scale (emergent behavior). However, it doesn't articulate reinforcing feedback loops, such as how the shift from implicit to explicit coordination creates more need for explicit coordination, making things progressively worse. |
-| Purpose | 0/1 | The response accepts 'output' and 'delivery speed' as the goal without questioning whether that metric captures the actual purpose. It doesn't distinguish between shipping features (the metric) and delivering customer value (the purpose). It never asks whether the original 6 were actually bottlenecked on delivery speed or whether 'accelerate delivery' was the right goal in the first place. |
+| Frame | 0/1 | The response does not explicitly name the embedded assumption that the larger group simply needs better coordination structures. It discusses the importance of chemistry and rapport but never identifies the problematic frame — that adding coordination mechanisms (charts, arrangements, a director) would be the 'obvious fix' and that this framing itself is the problem. |
+| Escape | 0/1 | The response stays largely within the shallow frame. Its 'Incompatible Architecture' section actually suggests the songs need rearrangement for seven players — which is precisely the shallow answer. It never makes the critical reframe that the four-person constraint was the enabling condition for the emergent quality, not a limitation to overcome. It treats the rapport gap as a time problem ('two months isn't enough') rather than a structural impossibility. |
+| Causal | 0/1 | The response identifies intermediate causes (lack of shared shorthand, overcrowded sonic space, incompatible arrangements) but does not trace the causal chain to the root: that implicit coordination is structurally impossible beyond a small group threshold, and that explicit coordination (the 'fix') destroys the very quality that made the music work. It frames the problem as potentially solvable with more time and better arrangements. |
+| Dynamics | 0/1 | The response mentions 'communication and anticipation' and 'developed shorthand' generically but does not identify specific feedback loops or emergent dynamics — e.g., how a bassist's walking line signals a key change, how mutual awareness among four creates real-time conversational improvisation, or how adding explicit coordination triggers a cascading transformation from spontaneous jazz to rehearsed repertory. The dynamics remain at the level of vague intuition. |
+| Purpose | 1/1 | The response does implicitly distinguish the owner's metric ('bigger sound') from what actually makes the music valuable, noting that jazz thrives on 'space and clarity — room for voices to be heard and dialogue to occur' and that the result was 'muddier overall sound, not a bigger one.' It evaluates against the real purpose (musical communication/dialogue) rather than just the stated goal of bigger sound. |
 
-**Total: 2/5**
+**Total: 1/5**
 

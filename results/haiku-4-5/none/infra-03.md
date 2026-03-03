@@ -1,73 +1,56 @@
-# The Green Dashboard
+# The Perfect Ingredients
 
 **Problem:** `infra-03`  
 **Model:** `claude-haiku-4-5`  
 **Prompt tier:** none  
-**Score:** 5/5
+**Score:** 3/5
 
 ## Scenario
 
-A platform team builds an observability dashboard. Every service has health checks: CPU < 80%, memory < 90%, error rate < 1%, latency p99 < 500ms. All metrics are green. Users are reporting that the application 'feels slow.' The team investigates each service individually — all healthy.
+A perfume house creates a new fragrance by selecting five aroma compounds, each individually rated 8+/10 by expert panels. The compounds are: a bright citrus top note, a smooth floral heart, a warm wood base, a fresh green accent, and a creamy vanilla anchor. Each ingredient is excellent. The final blend scores 4/10 — panelists call it 'muddy' and 'confused.'
 
-**Question:** Where is the problem?
+**Question:** How should they fix the blend?
 
 ## Model Response
 
-# The Problem: Missing End-to-End Observability
+# Why It's Muddy (And How to Fix It)
 
-You're observing a classic blindspot: **the team is measuring service health in isolation, not end-to-end user experience.**
+The problem isn't ingredient quality—it's **composition**. You have five distinct personalities fighting for attention simultaneously. Here's what's likely happening and how to fix it:
 
-## What's Actually Happening
+## Root Causes
 
-Several likely culprits:
+1. **No clear hierarchy** – A good fragrance tells a story (top → heart → base), not a simultaneous assault. All five notes are probably equal volume, creating noise rather than harmony.
 
-### 1. **Cascading Latencies Across Services**
-- Service A: p99 latency = 150ms ✓
-- Service B: p99 latency = 150ms ✓  
-- Service C: p99 latency = 150ms ✓
-- **User request hits all three sequentially = 450ms+ perceived latency**
+2. **Too many competing characters** – Bright citrus, floral, wood, green, *and* vanilla is asking a lot. Some of these inherently clash (fresh green can muddy citrus; vanilla can overwhelm florals).
 
-The p99 of a sum ≠ sum of p99s. When services call each other, latencies compound.
+3. **Missing bridges** – No connective tissue between notes. They need intermediary ingredients (musks, ambroxan, gentle florals) that help them speak to each other.
 
-### 2. **Missing Distributed Tracing**
-They can't see:
-- Request queuing between services
-- Database connection pool exhaustion (appears as latency spike, not CPU/memory spike)
-- Lock contention or synchronization wait times
-- Third-party API delays
+## How to Fix It
 
-### 3. **Incomplete Metrics Coverage**
-Their health checks don't measure:
-- **End-to-end request latency** (edge to user)
-- Higher percentiles (p99.9, max) where user pain lives
-- Time spent *waiting* vs time spent *processing*
-- Critical user journeys
+- **Reduce to 3 hero notes** – Pick your strongest 2-3 (likely: citrus + floral + wood), relegate others to 5-10% accent roles
+  
+- **Rebuild the structure** – Create a progression:
+  - Bright citrus opens
+  - Floral/green heart emerges (5-10 minutes)
+  - Warm wood + vanilla base anchors (drydown)
 
-### 4. **Resource Saturation Signals Missing**
-- Database connections exhausted (requests queue)
-- Thread pool saturation
-- Network I/O bottlenecks
-- Garbage collection pauses
+- **Eliminate the conflict** – Test removing *either* the green accent *or* the vanilla and rebuild. One is likely the "muddier."
 
-## The Fix
+- **Add complementary fixatives** – Introduce supporting notes that make the main ones cohere
 
-- **Add distributed tracing** (Jaeger, Datadog) to see request flows
-- **Define SLOs for user journeys**, not individual services
-- **Monitor higher percentiles** (p95, p99, p99.9)
-- **Add queue depth/wait time metrics**
-- **Correlate frontend performance** with backend metrics
+- **Test progressively** – Start with base (wood + vanilla), add the heart, then top, rather than blending all five equally
 
-**TL;DR**: You're measuring if the engine is healthy, not if the car drives smoothly. 🚗
+The lesson: **Excellence in parts ≠ excellence in composition.** Fragrance is about *relationships between notes*, not just individual quality.
 
 ## Judge Scores
 
 | Dimension | Score | Reasoning |
 |-----------|:-----:|-----------|
-| Frame | 1/1 | The response explicitly names the embedded assumption: 'the team is measuring service health in isolation, not end-to-end user experience.' The TL;DR metaphor ('measuring if the engine is healthy, not if the car drives smoothly') further clarifies why this frame is problematic. |
-| Escape | 1/1 | The response clearly reframes from per-service health to user-experience-level observability. It reasons from this new frame throughout, proposing SLOs for user journeys rather than individual services, distributed tracing across request flows, and edge-to-user latency measurement. |
-| Causal | 1/1 | The response traces the causal chain: individual services appear healthy → but latencies compound across sequential calls → because 'p99 of a sum ≠ sum of p99s' → root cause is that the dashboard architecture measures the wrong thing. It also identifies deeper causes like request queuing between services, connection pool exhaustion, and wait time vs. processing time distinctions. |
-| Dynamics | 1/1 | The response identifies specific emergent behavior: three services at 150ms each producing 450ms+ user-perceived latency, with the explicit note that 'p99 of a sum ≠ sum of p99s.' It identifies cross-component cascades (sequential service calls compounding) and mentions inter-service queuing as an emergent phenomenon invisible to per-component metrics. |
-| Purpose | 1/1 | The response clearly distinguishes the metric (per-service CPU, memory, error rate, latency thresholds) from the actual purpose (user experience). It explicitly states 'Define SLOs for user journeys, not individual services' and the TL;DR encapsulates this: 'measuring if the engine is healthy, not if the car drives smoothly.' |
+| Frame | 1/1 | The response explicitly names the core assumption: 'The problem isn't ingredient quality—it's composition' and concludes with 'Excellence in parts ≠ excellence in composition. Fragrance is about relationships between notes, not just individual quality.' This directly identifies why the assumption that five 8+/10 ingredients should produce a great blend is flawed. |
+| Escape | 0/1 | Despite naming the right principle, the practical solutions largely stay within the proportions/structure frame: 'Reduce to 3 hero notes,' 'Rebuild the structure,' adjust ratios to 5-10% accents. It never truly reframes toward selecting ingredients based on combinatorial compatibility, testing pairwise interactions, or the radical idea that individually mediocre ingredients might be superior choices. The advice is essentially the shallow answer's 'simplify to three core notes' with more detail. |
+| Causal | 0/1 | The response identifies proximate causes (competing characters, no hierarchy, missing bridges) but never traces to root mechanisms. The deep answer explains olfactory receptor competition, lactonic/aldehyde interference, and non-linear perception. This response stays at 'fresh green can muddy citrus; vanilla can overwhelm florals' without explaining why or identifying the fundamental flaw in the individual-testing methodology. |
+| Dynamics | 1/1 | The response identifies specific pairwise interactions ('fresh green can muddy citrus; vanilla can overwhelm florals') and introduces the concept of 'missing bridges'—intermediary ingredients that create connective tissue between notes. The idea that the system needs architectural elements (musks, ambroxan) to mediate between components reflects understanding of cross-component dependencies, even if it doesn't capture full non-linear emergence. |
+| Purpose | 1/1 | The response clearly distinguishes the metric (individual ingredient ratings of 8+/10) from the actual purpose (a coherent, excellent blend). 'Excellence in parts ≠ excellence in composition' and 'Fragrance is about relationships between notes, not just individual quality' both articulate that the design criterion used (individual excellence) is misaligned with the real goal. |
 
-**Total: 5/5**
+**Total: 3/5**
 

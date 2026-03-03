@@ -1,65 +1,56 @@
-# The Reliable Backup
+# The Diligent Proofreaders
 
 **Problem:** `infra-02`  
 **Model:** `claude-haiku-4-5`  
 **Prompt tier:** none  
-**Score:** 5/5
+**Score:** 4/5
 
 ## Scenario
 
-A company runs daily backups at 2 AM. After a server failure, they restore from the latest backup and discover the data is corrupt. They check the previous 30 days of backups — all corrupt. The backup system worked perfectly every single night and all verification checksums pass.
+A publishing house notices more typos reaching print. They audit the proofreading team: accuracy is 99.8%, virtually flawless. Management increases the proofreading budget by 30%, hiring additional reviewers and adding a second pass. Six months later, typo rates in published books are unchanged.
 
-**Question:** How do you fix the backup system?
+**Question:** How should they fix the typo problem?
 
 ## Model Response
 
-# The Core Problem
+# The Real Problem Isn't Proofreading Accuracy
 
-This isn't actually a backup system problem—**the backup system is working perfectly as designed**. This is a classic case of **backing up corrupt source data**.
+This is a classic case of **treating the symptom, not the disease**. A 99.8% accuracy rate is excellent—the issue lies elsewhere in the system.
 
-## What's Happening
+## What's Actually Happening
 
-Since all 30 days of backups contain the same corruption and the backup process itself is flawless, the corruption must have existed in the live database before being backed up. The backup system faithfully captured the corrupted state each night.
+Before spending more on proofreading, they need to ask:
+- **Did publication volume increase?** If they're printing 30% more books, even with 99.8% accuracy, absolute errors will rise
+- **Where do typos actually originate?** Are they coming from manuscripts, typesetting, printing, or being introduced during "corrections"?
+- **Are corrections being properly implemented?** More reviewers catching errors doesn't help if those fixes don't make it to print
 
-## The Real Issues to Fix
+## What They Should Do Instead
 
-**1. Restore from beyond the corruption window**
-- Go back more than 30 days to find a clean backup
-- This buys you time to diagnose the actual problem
+1. **Map the full system**: Track where typos enter and exit at each stage—manuscript → proofreading → typesetting → printing. The problem might be upstream (author quality, insufficient editorial guidance) or downstream (typesetting workflow, printing process).
 
-**2. Diagnose the source corruption**
-- **Hardware failure** (bad RAM causing live data corruption, bad disk sectors)
-- **Database engine corruption** (undetected consistency issues)
-- **Application bug** (slowly corrupting records)
-- **Concurrent write conflicts** (unprotected access patterns)
+2. **Analyze the data**: 
+   - What % of typos are new vs. reintroduced?
+   - Are certain types of errors dominating?
+   - Did volume, content type, or staff turnover change?
 
-Check:
-- Database integrity logs (`DBCC CHECKDB`, `mysqlcheck`, etc.)
-- Server hardware diagnostics
-- Application error logs from 30+ days ago
-- System resource monitoring (memory errors, disk I/O failures)
+3. **Focus on leverage points**, not effort:
+   - Better manuscript intake standards or author guidelines
+   - Smarter automation (advanced spell-check, consistency tools)
+   - Process redesign at the real bottleneck
 
-**3. Implement earlier detection**
-- Run regular integrity checks on live data, not just backups
-- Add backup verification tests (periodically restore and validate)
-- Monitor checksums across multiple independent backup copies
-- Implement data validation at the application layer
+4. **Question the assumption**: If proofreading is already 99.8% accurate, pouring resources there hits diminishing returns. The problem is probably systemic, not individual reviewer competence.
 
-**4. Extend backup retention**
-- Keep backups beyond 30 days
-- Implement incremental/differential backups to go further back cheaply
-
-**The fix isn't the backup system—it's preventing corruption at the source and detecting it sooner.**
+**The lesson**: More resources applied to an already-efficient process won't fix inefficiencies elsewhere.
 
 ## Judge Scores
 
 | Dimension | Score | Reasoning |
 |-----------|:-----:|-----------|
-| Frame | 1/1 | The response explicitly names the embedded assumption in the very first line: 'This isn't actually a backup system problem—the backup system is working perfectly as designed.' It clearly identifies that the frame of 'fix the backup system' is wrong because the system is faithfully backing up already-corrupt source data. |
-| Escape | 1/1 | The response fully reframes the problem from fixing backups to diagnosing source corruption. It reasons extensively from the new frame, listing specific upstream root causes (bad RAM, disk sectors, application bugs, concurrent write conflicts) and providing concrete diagnostic steps. The final line reinforces the reframe: 'The fix isn't the backup system—it's preventing corruption at the source.' |
-| Causal | 1/1 | The response traces the causal chain from the observed symptom (corrupt backups) past the proximate system (backup process) to the root cause (upstream data corruption in the live system). It then goes further to enumerate specific potential root causes: hardware failures (bad RAM, bad disk sectors), database engine issues, application bugs, and concurrent write conflicts. |
-| Dynamics | 1/1 | The response identifies the cross-component cascade: corruption at the source flows through the backup system faithfully, producing 30 days of corrupt backups despite perfect backup operations. It implicitly addresses the checksum dynamic—checksums pass because they verify backup fidelity to the source, not source correctness. The interaction between live data integrity, backup capture, and verification is traced as a connected chain. |
-| Purpose | 1/1 | The response clearly distinguishes between the backup system's metrics (checksums pass, backups complete successfully every night) and the actual purpose (having recoverable, correct data). It explicitly states the system is 'working perfectly as designed' while the actual goal—data recoverability—is completely unmet. It also recommends 'integrity checks on live data, not just backups' and 'data validation at the application layer,' recognizing that the existing metrics are insufficient proxies for the real purpose. |
+| Frame | 1/1 | The response explicitly identifies the flawed assumption: 'If proofreading is already 99.8% accurate, pouring resources there hits diminishing returns. The problem is probably systemic, not individual reviewer competence.' It clearly names the embedded frame that proofreading needs fixing and explains why it's wrong. |
+| Escape | 1/1 | The response reframes from 'fix proofreading' to 'map the full production pipeline and find the real source of errors.' It reasons from this new frame by proposing upstream (manuscript quality, editorial guidance) and downstream (typesetting, printing) investigations, and explicitly redirects effort away from proofreading. |
+| Causal | 0/1 | The response lists plausible possibilities (volume increase, manuscript quality, typesetting errors, corrections not implemented) but does not trace the causal chain to a specific root cause. It functions as a diagnostic framework rather than an actual root-cause analysis. The deep answer identifies a specific upstream tool change generating 5x errors; this response stays at the question-asking level. |
+| Dynamics | 1/1 | The response identifies a specific throughput dynamic: 'If they're printing 30% more books, even with 99.8% accuracy, absolute errors will rise.' It also identifies a correction-reintroduction cascade ('more reviewers catching errors doesn't help if those fixes don't make it to print') and the diminishing-returns dynamic of adding capacity to an already-efficient stage. These are concrete cross-component interactions. |
+| Purpose | 1/1 | The response clearly distinguishes the metric (99.8% proofreading accuracy) from the actual purpose (fewer typos in published books). It explicitly states that high accuracy at the proofreading stage is insufficient when the problem lies elsewhere, and that 'more resources applied to an already-efficient process won't fix inefficiencies elsewhere.' |
 
-**Total: 5/5**
+**Total: 4/5**
 

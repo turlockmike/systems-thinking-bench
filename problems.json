@@ -1,159 +1,162 @@
 [
   {
     "id": "infra-01",
-    "domain": "infrastructure",
-    "title": "The Helpful Cache",
-    "scenario": "A web application's response times have degraded from 50ms to 1200ms over the past month. The team adds a Redis cache in front of the database. Response times improve to 40ms. Two months later, the database server's disk fills up and crashes. Investigation reveals the database has grown 10x in that period.",
-    "question": "What went wrong?",
-    "shallow_answer": "The cache masked a data growth problem. They should have added monitoring for database size and implemented data cleanup policies alongside the cache.",
-    "deep_answer": "The cache caused the crash. The original slowdown was a symptom of data growth. By making reads fast, the cache allowed the application to handle more traffic, which drove more writes, accelerating the very data growth that caused the original problem. The team treated a symptom (slow reads) with a fix (cache) that amplified the root cause (data growth). The question to ask was: why did response times degrade? That would have led to the data growth issue directly.",
-    "frame": "The implicit frame is 'slow responses are a caching problem' rather than 'slow responses are a symptom of something else entirely'.",
+    "domain": "artisan-manufacturing",
+    "title": "The Efficient Dehumidifier",
+    "scenario": "A small organic soap maker notices their bars are taking 20% longer to cure. They install a more powerful dehumidifier in the curing room. Bars harden faster than ever — cure time drops by 40%. Three months later, customers complain the soap dissolves in the shower within days instead of lasting weeks. Internal testing confirms: bars feel hard when shipped but break down rapidly in water.",
+    "question": "What went wrong with the soap?",
+    "shallow_answer": "The dehumidifier dried the outside too fast, creating a hard shell while the interior stayed soft. They need to calibrate the dehumidifier for a slower, more even dry.",
+    "deep_answer": "The slow cure wasn't a problem — it was caused by a recipe change. The soap maker had been gradually increasing olive oil content (a customer-requested change for 'gentler' soap). Olive oil soap requires much longer cure times because the saponification process is slower, but the resulting bars are exceptionally hard and long-lasting when fully cured. The dehumidifier forced rapid surface hardening without allowing complete internal saponification. The real fix was adjusting the cure schedule to match the new recipe — the slow cure was the process working correctly for the new ingredients. Nobody asked why cure times changed; they just accelerated the symptom away.",
+    "frame": "The implicit frame is 'the curing process is too slow' rather than 'the cure time changed because the recipe changed, and the new cure time is correct'.",
     "key_dynamics": [
-      "Fix amplifies root cause: cache enables more traffic which drives more writes",
-      "Symptom treatment vs. root cause diagnosis",
-      "Feedback loop: cache -> more capacity -> more writes -> faster growth -> bigger crash"
+      "Fix (dehumidifier) created cosmetically acceptable product that was structurally deficient",
+      "The slow cure was a correct response to a recipe change, not a malfunction",
+      "Nobody investigated why cure times increased — they just treated the symptom",
+      "Accelerating a process that needs time doesn't save time; it skips a necessary chemical reaction"
     ]
   },
   {
     "id": "infra-02",
-    "domain": "infrastructure",
-    "title": "The Reliable Backup",
-    "scenario": "A company runs daily backups at 2 AM. After a server failure, they restore from the latest backup and discover the data is corrupt. They check the previous 30 days of backups — all corrupt. The backup system worked perfectly every single night and all verification checksums pass.",
-    "question": "How do you fix the backup system?",
-    "shallow_answer": "Add integrity validation beyond checksums, implement periodic test restores, use a different backup method that verifies data consistency, and add end-to-end restore testing.",
-    "deep_answer": "The backup system isn't broken. It faithfully backed up corrupt data every night. The checksums pass because they verify the backup matches the source — and the source was already corrupt. The real question is: what corrupted the data, and when did it start? The corruption happened at least 30 days ago, upstream of the backup system entirely. Fixing the backup system fixes nothing — you need to find and fix the corruption source. The question itself ('how do you fix the backup system?') is a trap that assumes the backup is the problem.",
-    "frame": "The implicit frame is 'the backup system failed' rather than 'the backup system faithfully preserved already-corrupt data'.",
+    "domain": "publishing",
+    "title": "The Diligent Proofreaders",
+    "scenario": "A publishing house notices more typos reaching print. They audit the proofreading team: accuracy is 99.8%, virtually flawless. Management increases the proofreading budget by 30%, hiring additional reviewers and adding a second pass. Six months later, typo rates in published books are unchanged.",
+    "question": "How should they fix the typo problem?",
+    "shallow_answer": "Add automated spell-checking and grammar tools before the proofreading stage, implement style guides, and require authors to use standardized templates. The proofreaders are good but need technological support.",
+    "deep_answer": "The proofreaders aren't the problem and never were — at 99.8% they're already catching nearly everything that reaches them. Six months ago, the company switched to a new AI-assisted drafting tool that generates 5x more errors per page than the old manual process. Adding more proofreaders just catches upstream garbage more efficiently without reducing the garbage being produced. The question 'how do we fix the typo problem?' assumes the problem is in the proofreading stage. It's not — it's in the drafting tool that was never evaluated for error rate. Doubling the proofreading budget would still leave more typos than before the tool switch because the error volume overwhelms even perfect proofreaders.",
+    "frame": "The implicit frame is 'proofreading is failing' rather than 'proofreading is faithfully processing a flood of errors introduced upstream by a new tool'.",
     "key_dynamics": [
-      "Looking at the last system in the chain when the failure is in the first",
-      "Checksums verify consistency, not correctness — a perfect backup of corrupt data is still corrupt",
-      "The question itself encodes the wrong assumption (backup system needs fixing)"
+      "Looking at the last stage in the chain when the failure is in an earlier stage",
+      "High accuracy at the proofreading stage doesn't mean low error output if input error volume exploded",
+      "The question itself encodes the wrong assumption (proofreading needs fixing)",
+      "Adding capacity to a downstream process can't fix an upstream quality collapse"
     ]
   },
   {
     "id": "ml-01",
-    "domain": "ml-data",
-    "title": "The Accurate Forecast",
-    "scenario": "A demand forecasting model is 94% accurate. The supply chain team uses it to set inventory levels. Despite the high accuracy, the company loses $12M/year to stockouts. The data science team is asked to improve the model to 97% accuracy.",
-    "question": "Will improving accuracy to 97% solve the stockout problem?",
-    "shallow_answer": "Partially — better accuracy helps, but they should also add safety stock buffers and improve supply chain lead times to handle the remaining 3% of errors.",
-    "deep_answer": "No. The 6% the model gets wrong aren't random — they're the high-demand spikes: Black Friday, viral moments, weather events. These are precisely the cases where stockouts are most expensive. The model is 94% accurate on the 80% of days that are easy to predict and terrible on the 20% that matter. Improving overall accuracy to 97% will likely just get better at the easy days. The metric is wrong. They need a model optimized for tail accuracy (or asymmetric loss that penalizes under-prediction more than over-prediction), not average accuracy.",
-    "frame": "The implicit frame is 'higher accuracy = better forecasting' rather than 'accuracy is an average that hides where errors concentrate'.",
+    "domain": "aviation",
+    "title": "The Reliable Route",
+    "scenario": "A regional airline touts a 96% on-time departure rate. Three of their routes serve remote island communities with hospitals that depend on time-sensitive medical supply flights. Management is told to improve the overall on-time rate to 98%. After six months of effort, they hit 98.2%. Island hospital administrators report that medical supply delays have gotten worse, not better.",
+    "question": "How did on-time performance improve while medical delays got worse?",
+    "shallow_answer": "The airline probably deprioritized the island routes to focus on high-volume mainland routes where improvements had more impact on the overall metric. They need to set per-route targets instead of an aggregate target.",
+    "deep_answer": "The 4% of late flights weren't random — they were almost entirely the island routes, which have 40% delay rates due to weather sensitivity, short runways, and single-aircraft assignments. The 98% target was achieved by adding buffer time to already-reliable mainland routes (easy wins) and by occasionally canceling island flights preemptively when weather was marginal — a canceled flight doesn't count as 'late.' The island routes are structurally different: they need dedicated weather-capable aircraft, flexible scheduling, and backup logistics — none of which an aggregate on-time target incentivizes. The metric improvement came from making reliable routes more reliable and hiding the worst-performing routes through cancellation, exactly the opposite of what the hospitals needed.",
+    "frame": "The implicit frame is 'on-time performance is a single number to optimize' rather than 'the 4% that's late is concentrated on the routes where timeliness matters most'.",
     "key_dynamics": [
-      "Non-uniform error distribution: errors cluster on high-value days",
-      "Average accuracy hides tail performance — 94% overall can mean 0% on the days that matter",
-      "Metric-goal misalignment: optimizing average accuracy doesn't minimize stockout cost"
+      "Aggregate metrics hide where failures concentrate — 96% overall can mean 60% on critical routes",
+      "Optimizing an average naturally improves easy cases and ignores hard ones",
+      "Canceling bad flights improves the on-time metric while making service worse",
+      "The routes where timeliness matters most are structurally the hardest to make on-time"
     ]
   },
   {
     "id": "sw-01",
-    "domain": "software",
-    "title": "The Slow Test Suite",
-    "scenario": "A team's CI pipeline takes 45 minutes. Developers start batching commits to avoid waiting, leading to larger PRs and more merge conflicts. The team is asked to speed up the test suite. They parallelize it, decomposing integration tests into isolated unit tests, and get it down to 12 minutes. Three months later, the defect rate has doubled.",
-    "question": "Why did defects increase after making CI faster?",
-    "shallow_answer": "The parallelization likely introduced flaky tests or race conditions, or the test refactoring inadvertently removed some test coverage. They should audit test coverage and fix the flaky tests.",
-    "deep_answer": "The 45-minute suite was slow because it had accumulated years of thorough integration tests that tested component interactions. To parallelize, the team decomposed these into isolated unit tests — removing the interaction coverage that was actually catching bugs. The slow suite wasn't a problem; it was doing important work. The real problem was developers batching commits, which is a workflow problem, not a CI problem. Smaller feedback loops (draft PR checks, pre-commit hooks on changed files) would have solved the workflow issue without gutting the test suite.",
-    "frame": "The implicit frame is 'the test suite is too slow' rather than 'the development workflow doesn't match the test suite's pace'.",
+    "domain": "culinary",
+    "title": "The Specialized Kitchen",
+    "scenario": "A family restaurant is famous for its stew. The retiring head chef trains three new cooks, each specializing in one component: meat preparation, vegetable roasting, and broth. Each cook's individual component scores higher in taste tests than the original chef's version of that component. But customers say the stew has lost its magic — it's technically good but 'somehow flat.'",
+    "question": "Why is the stew worse when each component is better?",
+    "shallow_answer": "The three cooks aren't timing things to meld properly. They need a recipe with precise timing so all components come together at the right moment, and they should practice coordinating.",
+    "deep_answer": "The original chef didn't make three components — she made one stew. She tasted as she went, adjusting the broth's salt based on how the meat was seasoned that day, changing roasting times based on the vegetable moisture content, and timing everything so components melded during a critical 20-minute simmer window. Each cook optimizing their component independently means the meat is perfectly seasoned in isolation, the broth is perfectly balanced in isolation, and together they're over-salted. The vegetables are roasted to peak caramelization but arrive at the wrong moment to absorb broth. A written recipe can't capture this because the adjustments were responsive — they depended on what was happening in the other components in real time. The specialization destroyed the integration that was the actual skill.",
+    "frame": "The implicit frame is 'the components need better coordination' rather than 'the craft was the integration itself, and specialization destroyed it'.",
     "key_dynamics": [
-      "Decomposing integration tests into unit tests removes interaction coverage",
-      "The slow suite was slow because it was thorough — speed was a feature of its comprehensiveness",
-      "Developer behavior (commit batching) is a workflow problem, not a CI problem",
-      "Fixing CI speed destroyed the value the CI was providing"
+      "Decomposing an integrated process into independent components loses the interaction that created quality",
+      "Each component optimized independently creates conflicts when combined (e.g., both meat and broth perfectly salted = over-salted together)",
+      "The chef's real skill was responsive adjustment across components, not component expertise",
+      "A recipe or coordination protocol can't capture real-time adaptive integration"
     ]
   },
   {
     "id": "health-01",
-    "domain": "healthcare",
-    "title": "The Fair Algorithm",
-    "scenario": "A hospital uses an algorithm to allocate follow-up appointments. It predicts which patients are most likely to have complications and prioritizes them. An audit reveals that the algorithm schedules Black patients at significantly lower rates than white patients with the same conditions. The team is asked to add a fairness constraint to equalize scheduling rates.",
-    "question": "Will adding a fairness constraint fix the racial disparity?",
-    "shallow_answer": "It's a good start, but they should also audit training data for historical bias, ensure representative sampling, and implement ongoing monitoring for disparate impact.",
-    "deep_answer": "No. The algorithm predicts complications by using healthcare spending as a proxy for health needs. Black patients historically have less access to healthcare and therefore lower spending, so the algorithm interprets them as healthier. Adding a fairness constraint to the output forces equal scheduling while the underlying risk scores remain wrong — patients will be scheduled equally but triaged incorrectly within each group. The proxy variable is the problem, not the output distribution. You have to change what the model is predicting (actual health needs, not spending), not constrain its output.",
-    "frame": "The implicit frame is 'the algorithm's output is biased' rather than 'the algorithm's input proxy encodes structural inequality'.",
+    "domain": "urban-planning",
+    "title": "The Smart Meters",
+    "scenario": "A city installs smart parking meters that adjust prices dynamically based on spot turnover rate — fast turnover signals high demand, so prices rise to encourage shorter stays. In the arts district, spots turn over slowly because visitors come for 3-hour gallery walks. The system drops prices to near-zero, interpreting slow turnover as low demand. But the arts district is always full — drivers circle for 20+ minutes looking for spots, and local businesses complain about inaccessible parking.",
+    "question": "How should they fix the pricing algorithm?",
+    "shallow_answer": "Add occupancy sensors as a second signal — if spots are consistently full despite low turnover, that indicates high demand too. Weight both turnover and occupancy in the pricing model.",
+    "deep_answer": "The algorithm uses turnover rate as a proxy for demand, but turnover measures usage pattern, not demand level. A spot occupied for 3 hours in a full lot is maximum demand with minimum turnover. Adding occupancy data would help, but it doesn't fix the core design flaw: the algorithm assumes all parking demand is the same and should be optimized the same way. The arts district needs high prices to encourage visitors to use the parking garage two blocks away, freeing street spots for quick drop-ins. The commercial district needs low prices to attract shoppers. The residential district needs time limits, not price signals. The deeper problem is that a single pricing mechanism can't serve fundamentally different parking ecologies. The question 'fix the algorithm' assumes the algorithm is the right tool — but different districts need different systems entirely.",
+    "frame": "The implicit frame is 'the algorithm needs better inputs' rather than 'turnover rate is the wrong proxy for demand, and a single pricing mechanism can't serve different parking ecologies'.",
     "key_dynamics": [
-      "Proxy variable (spending) encodes structural inequality, not health status",
-      "Output fairness constraints don't fix input bias — they create equal-but-wrong predictions",
-      "The disparity is upstream of the algorithm entirely: in healthcare access patterns",
-      "Fixing the output while the input remains biased creates a different kind of harm"
+      "Proxy variable (turnover) measures usage pattern, not demand intensity",
+      "Full lot + low turnover = high demand, but the algorithm reads it as low demand",
+      "A single optimization mechanism applied to structurally different contexts serves none of them well",
+      "The algorithm creates a reinforcing loop: low price attracts more circling drivers, spots stay full, turnover stays low, price stays low"
     ]
   },
   {
     "id": "supply-01",
-    "domain": "supply-chain",
-    "title": "The Empty Queue",
-    "scenario": "A fulfillment center installs a new conveyor system that moves packages 3x faster. Throughput increases for two weeks, then drops below the original level. The conveyors are working perfectly. The queue of packages waiting to be processed is always empty.",
-    "question": "Why did throughput drop despite the faster conveyors?",
-    "shallow_answer": "A downstream bottleneck — packing stations or shipping docks can't keep up with the faster conveyors, creating a new constraint that limits overall throughput.",
-    "deep_answer": "The empty queue is the clue everyone ignores. The old, slow conveyor acted as a buffer — packages accumulated during demand spikes and drained during lulls, keeping workers steadily busy. The new fast conveyor delivers packages in real-time bursts. Workers are overwhelmed during peaks and idle during valleys. Average utilization might be the same, but variance kills throughput because humans can't scale linearly with bursty input. The conveyor isn't too fast — the system lost its buffer, and nobody noticed because 'empty queue' looks like success.",
-    "frame": "The implicit frame is 'the conveyor is too fast for downstream' rather than 'the old conveyor's slowness was providing a buffering function'.",
+    "domain": "marine-biology",
+    "title": "The Powerful Pump",
+    "scenario": "An aquarium struggles with excess algae in their coral reef tank. They replace the old, underpowered water pump with a high-flow system. Algae drops dramatically within weeks. Four months later, the coral begins bleaching — turning white and dying. Water chemistry tests are normal. The new pump is working perfectly.",
+    "question": "Why is the coral bleaching?",
+    "shallow_answer": "The high-flow pump is creating too much direct current stress on the coral. They should add flow diffusers or baffles to soften the water movement while maintaining the filtration benefits.",
+    "deep_answer": "The old pump's weak, variable flow mimicked natural reef currents. Coral polyps had to actively extend and work to capture food particles, which kept them physiologically strong and stimulated their symbiotic zooxanthellae (the algae living inside coral that give it color and energy). The new pump's powerful laminar flow delivers food directly to the polyps — they stopped 'exercising.' Without the stimulus of variable, challenging currents, the coral's symbiotic relationship weakened, and it expelled its zooxanthellae (bleaching). Meanwhile, the algae problem was a symptom of excess nutrients in the water — the old pump couldn't fix that either, but the coral was healthy enough to compete with algae for space. The new pump solved the algae symptom by starving it of calm-water zones while simultaneously destroying the coral's fitness mechanism. The pump upgrade treated a nutrient problem as a flow problem and broke the organism it was trying to protect.",
+    "frame": "The implicit frame is 'the pump is too powerful' rather than 'the old pump's weakness was performing a biological function — stressing coral in a way that kept it healthy'.",
     "key_dynamics": [
-      "The slow conveyor was an accidental buffer that smoothed demand variance",
-      "Empty queue looks like efficiency but indicates lost buffering",
-      "Human throughput degrades with variance even if average load is constant",
-      "Removing a 'bottleneck' can destroy a system function nobody recognized it was performing"
+      "The old pump's weakness was an accidental fitness mechanism for the coral",
+      "Removing a constraint (weak flow) destroyed a hidden biological function (coral exercise)",
+      "The algae was a nutrient problem misdiagnosed as a flow problem",
+      "The 'fix' solved the visible symptom (algae) while killing the primary organism (coral)"
     ]
   },
   {
     "id": "sw-02",
-    "domain": "software",
-    "title": "The Successful Migration",
-    "scenario": "A company migrates from a monolith to microservices. Each service has its own team, deploy pipeline, and database. All 47 services are running in production. Latency is within SLA. Error rates are low. But feature development velocity has dropped 60% compared to the monolith era.",
-    "question": "What went wrong with the migration?",
-    "shallow_answer": "Too many services created coordination overhead. Communication costs grow quadratically with team count. They should consolidate related services and reduce the number of inter-service boundaries.",
-    "deep_answer": "The monolith was slow to deploy but fast to develop — shared codebase, shared data model, one mental model. The microservices are fast to deploy but slow to develop — every feature touches 4-5 services, requiring cross-team API negotiations, distributed debugging, and contract management. They optimized for deployment independence because that was the stated pain, but the actual work is development, which now requires more coordination than before. Splitting into fewer services doesn't fix this — it just moves the coordination boundary. The real question is: what were they actually trying to speed up? If the answer was 'feature delivery,' they picked the wrong architecture. The migration succeeded at its goal and failed at its purpose.",
-    "frame": "The implicit frame is 'the migration has a technical problem' rather than 'the migration optimized for the wrong thing'.",
+    "domain": "education",
+    "title": "The Efficient Curriculum",
+    "scenario": "A language school switches from small conversation-based classes (expensive, inconsistent, hard to scale) to a standardized app-based curriculum. Grammar test scores improve 30%. Student retention drops 50% — half the students quit within two months. The school adds gamification features to the app. Retention improves slightly but remains far below the conversation-class era.",
+    "question": "Why aren't students staying despite better learning outcomes?",
+    "shallow_answer": "The app lacks engagement. They should add social features — group challenges, leaderboards, peer chat — to replicate the community aspect of in-person classes while keeping the superior curriculum.",
+    "deep_answer": "The conversation classes weren't an inefficient way to teach grammar — they were a social experience that happened to teach language. Students kept coming because they formed relationships with teachers and classmates, had scheduled social commitments, and enjoyed the human interaction. Grammar was a byproduct of showing up. The app teaches grammar better but removed the reason people showed up in the first place. The school optimized for learning efficiency and destroyed the social infrastructure that drove learning behavior. Adding gamification or social features to an app doesn't recreate the bonds formed by sitting across from the same teacher every Thursday night. The school measured the wrong output: the product isn't 'grammar knowledge,' it's 'a reason to keep learning.' The conversation classes delivered that. The app doesn't.",
+    "frame": "The implicit frame is 'the app needs better engagement features' rather than 'the conversation classes' real product was social commitment, not grammar instruction'.",
     "key_dynamics": [
-      "Deployment independence vs. development independence — often inversely correlated",
-      "The monolith's implicit coordination (shared code, shared mental model) was replaced by explicit coordination (APIs, contracts, meetings)",
-      "The migration succeeded at its stated goal (deploy independence) but failed at its actual purpose (faster feature delivery)",
-      "Nobody asked 'what are we actually trying to speed up?' before choosing the architecture"
+      "The school optimized for the stated goal (teaching grammar) and destroyed the actual mechanism (social commitment) that drove learning",
+      "Students didn't come for grammar — they came for human connection; grammar was a side effect of attendance",
+      "Adding social features to an app can't replicate relationships formed through shared physical presence",
+      "Measuring learning outcomes instead of learning behavior misidentified what the classes actually produced"
     ]
   },
   {
     "id": "org-01",
-    "domain": "organizational",
-    "title": "The Escalation Policy",
-    "scenario": "A support team implements a strict escalation policy: if a ticket isn't resolved in 2 hours, it escalates to a senior engineer. After implementation, average resolution time drops from 6 hours to 3 hours. Six months later, their two best senior engineers quit.",
-    "question": "Why did the senior engineers quit, and what should the team do?",
-    "shallow_answer": "They burned out from handling too many escalations. The fix is to hire more senior engineers, extend the escalation window, or add an intermediate tier to absorb some of the load.",
-    "deep_answer": "The 2-hour policy changed what junior engineers learned. Before, they'd struggle with hard problems for hours and eventually figure them out — that's how they became senior engineers. Now they wait 2 hours and hand it off. The senior engineers aren't just overloaded — they're handling problems that used to resolve themselves as juniors grew. The pipeline that produces senior engineers has been cut. The two who quit didn't just burn out from volume; they saw that the system stopped growing anyone else, making them the permanent ceiling with no relief in sight. Hiring more seniors or extending the window both miss the structural issue: the policy destroyed the organization's ability to develop talent.",
-    "frame": "The implicit frame is 'senior engineers are overloaded' rather than 'the escalation policy destroyed the learning mechanism that creates senior engineers'.",
+    "domain": "craftsmanship",
+    "title": "The Quality Standard",
+    "scenario": "A violin shop's master luthier traditionally lets apprentices build their first 20 instruments from scratch, knowing most will be mediocre. The shop institutes a quality standard: only instruments passing a professional sound panel can be sold. Apprentice instruments immediately improve — they study what passes and build to that standard. But after five years, none of the apprentices can build the innovative, award-winning instruments the shop is known for.",
+    "question": "Why can't the apprentices build high-end instruments despite years of meeting the quality standard?",
+    "shallow_answer": "The quality standard set a ceiling, not a floor. They should also require experimental builds and expose apprentices to high-end construction techniques. The standard needs to evolve to push toward excellence, not just competence.",
+    "deep_answer": "The quality standard eliminated failure, and failure was the learning mechanism. Before the standard, apprentices experimented wildly — unusual wood combinations, non-standard bracing patterns, experimental varnishes. Most failed. But the failures taught them why the rules exist, what happens at the boundaries, and occasionally produced a breakthrough. With the standard, apprentices only build safe, conservative designs that they know will pass. They've learned to hit a target, not to explore a space. The master luthier's award-winning instruments came from thousands of experiments, most of which would have failed the quality panel. Innovation requires tolerating — even requiring — failure. The standard produced reliable mediocrity by eliminating the variance that produces both bad instruments and great ones. The shop traded its future for its present.",
+    "frame": "The implicit frame is 'the standard needs to be higher or broader' rather than 'the standard eliminated the failure-driven exploration that produces mastery'.",
     "key_dynamics": [
-      "The escalation policy cut the talent development pipeline",
-      "Junior engineers stopped learning by struggling — the mechanism that creates seniors was removed",
-      "Senior engineers became a permanent ceiling, not a temporary bottleneck",
-      "The system optimized short-term resolution time at the cost of long-term organizational capability"
+      "Quality standards eliminate variance — both bad outcomes AND breakthrough outcomes",
+      "Mastery requires extensive failure; the standard made failure unacceptable",
+      "Apprentices learned to hit a target (convergent) instead of exploring a space (divergent)",
+      "The shop optimized present output quality at the cost of future capability development"
     ]
   },
   {
     "id": "infra-03",
-    "domain": "infrastructure",
-    "title": "The Green Dashboard",
-    "scenario": "A platform team builds an observability dashboard. Every service has health checks: CPU < 80%, memory < 90%, error rate < 1%, latency p99 < 500ms. All metrics are green. Users are reporting that the application 'feels slow.' The team investigates each service individually — all healthy.",
-    "question": "Where is the problem?",
-    "shallow_answer": "Look at the full request path end-to-end. The issue is likely accumulated latency across multiple services in a call chain, or network overhead between services.",
-    "deep_answer": "Every service is at p99 < 500ms, but a user request hits 8 services sequentially. If each service is at p95 = 200ms, the user-experienced p95 is not 200ms — it's the convolution of 8 distributions, which can easily be 2-3 seconds. No individual service is unhealthy. The system is unhealthy in a way that no per-service dashboard can show. The deeper issue is that the dashboard architecture encodes a false assumption: that system health equals the conjunction of component health. It answers 'is each component okay?' when the real question is 'is the user experience okay?' These are fundamentally different questions, and the monitoring was built to answer the wrong one.",
-    "frame": "The implicit frame is 'the problem is in one of the services' rather than 'the problem is an emergent property of the service composition that no per-service metric can capture'.",
+    "domain": "perfumery",
+    "title": "The Perfect Ingredients",
+    "scenario": "A perfume house creates a new fragrance by selecting five aroma compounds, each individually rated 8+/10 by expert panels. The compounds are: a bright citrus top note, a smooth floral heart, a warm wood base, a fresh green accent, and a creamy vanilla anchor. Each ingredient is excellent. The final blend scores 4/10 — panelists call it 'muddy' and 'confused.'",
+    "question": "How should they fix the blend?",
+    "shallow_answer": "Adjust the ratios — some ingredients are probably overpowering others. They need a more experienced nose to balance the proportions, or they should simplify to three core notes instead of five.",
+    "deep_answer": "The problem isn't the ratios — it's that certain combinations create perceptual interference that no ratio can fix. Citrus limonene and cedar compounds compete for the same olfactory receptors, causing neither to register cleanly. The vanilla's lactonic notes flatten the floral's aldehyde character rather than supporting it. Each ingredient was tested alone, but fragrance perception is non-linear: A and B can each smell great while A+B smells like neither. The panel testing verified each component is good but couldn't predict how they interact in combination. The house needs to test pairwise and group interactions, not just individual ingredients. More fundamentally, great perfumes aren't built from five excellent ingredients — they're built from ingredients that are excellent *together*, which sometimes means choosing individually mediocre compounds that create emergent complexity when combined. 'All ingredients are excellent' is the wrong design criterion.",
+    "frame": "The implicit frame is 'the blend needs better proportions' rather than 'individual excellence doesn't predict combinatorial quality, and some excellent ingredients are incompatible'.",
     "key_dynamics": [
-      "Latency compounds across sequential service calls — system p99 is not max(component p99)",
-      "Per-component health checks cannot detect emergent system-level degradation",
-      "The dashboard architecture encodes a false assumption: system health = conjunction of component health",
-      "The monitoring answers the wrong question: 'are components OK?' vs. 'is the user experience OK?'"
+      "Component quality doesn't predict system quality — interactions dominate",
+      "Certain combinations create perceptual interference that no ratio adjustment can fix",
+      "Testing components individually cannot reveal emergent combinatorial properties",
+      "The best blends often use individually unremarkable ingredients that complement each other"
     ]
   },
   {
     "id": "org-02",
-    "domain": "organizational",
-    "title": "The Productive Team",
-    "scenario": "A team of 6 engineers ships features consistently. Management adds 4 more engineers to accelerate delivery. After onboarding, the team's output drops. Management assumes it's temporary — new engineers need ramp-up time. Eight months later, output is still lower than the original 6-person team.",
-    "question": "What should management do?",
-    "shallow_answer": "This is Brooks's Law — adding people to a late project makes it later because communication overhead grows quadratically. They should consider splitting into two smaller, independent teams with clear ownership boundaries.",
-    "deep_answer": "Brooks's Law is the textbook answer but it's incomplete. The original 6 had shared context — they knew the codebase, the history, the customer, and each other's working styles. They communicated implicitly through code structure, naming conventions, and shared mental models. The 4 new engineers lack this, so the team shifted from implicit to explicit coordination: more meetings, more documentation, more code review, more design docs. The original 6 now spend their time transferring context instead of using context. Splitting into two teams makes it worse — now you have two teams that each lack the full picture. The real question is: what is the team actually bottlenecked on? If it's a specific expertise, one targeted hire beats four general ones. If it's not people at all — technical debt, unclear requirements, organizational friction — then no amount of hiring helps. Management is solving 'we need more output' with 'add more people' without asking why 6 was the right number.",
-    "frame": "The implicit frame is 'more engineers = more output, with communication overhead as the only cost' rather than 'the team's productivity comes from shared implicit context that new members dilute'.",
+    "domain": "music",
+    "title": "The Bigger Ensemble",
+    "scenario": "A jazz quartet — piano, bass, drums, saxophone — plays three nights a week at a club and has a loyal following. The club owner, wanting a 'bigger sound,' funds the addition of three more musicians: trumpet, guitar, and trombone. After two months of rehearsal, the seven-piece group performs. Audience attendance drops 30%. Reviews say the music is 'competent but lifeless.' All seven musicians are individually excellent.",
+    "question": "Why did adding talented musicians make the music worse?",
+    "shallow_answer": "Seven musicians need arrangements and clear roles. The quartet was improvising freely, but the larger group needs a musical director, written charts, and defined solo sections to avoid stepping on each other.",
+    "deep_answer": "The quartet's magic was implicit coordination — four people who knew each other's tendencies so deeply they could communicate through musical gestures: a raised eyebrow from the pianist, the bassist's walking line signaling a key change, the drummer's fill cueing the sax solo. This conversational quality is what jazz audiences come for — the thrill of watching musicians think together in real time. With seven people, nobody can track everyone else's signals. They need charts, rehearsed arrangements, and planned solos — explicit coordination replacing implicit communication. The music becomes technically correct but predetermined. The audience came for the spontaneous conversation and got a rehearsed presentation. Adding arrangements and a musical director (the shallow answer) is exactly the problem, not the solution — it completes the transformation from jazz to repertory. The quartet wasn't limited by its size; its size was the source of its magic. The four-person constraint is what made implicit coordination possible.",
+    "frame": "The implicit frame is 'the larger group needs better coordination structures' rather than 'the small group's implicit coordination WAS the product, and adding people destroyed it'.",
     "key_dynamics": [
-      "Implicit coordination (shared mental models) replaced by explicit coordination (meetings, docs, reviews)",
-      "Original engineers shifted from producing to context-transferring",
-      "The assumption 'output scales with headcount' ignores that team knowledge is the real asset",
-      "Management didn't ask why 6 engineers were productive — they assumed the bottleneck was people"
+      "Implicit coordination (musical gestures, shared intuition) was replaced by explicit coordination (charts, arrangements, rehearsals)",
+      "The audience valued the spontaneous conversational quality, which requires a small enough group to maintain mutual awareness",
+      "The constraint (only four people) was the enabling condition for the emergent quality (improvisational conversation)",
+      "Adding structure (the 'obvious' fix) completes the destruction by formalizing what needs to be spontaneous"
     ]
   }
 ]

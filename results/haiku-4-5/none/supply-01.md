@@ -1,54 +1,57 @@
-# The Empty Queue
+# The Powerful Pump
 
 **Problem:** `supply-01`  
 **Model:** `claude-haiku-4-5`  
 **Prompt tier:** none  
-**Score:** 0/5
+**Score:** 2/5
 
 ## Scenario
 
-A fulfillment center installs a new conveyor system that moves packages 3x faster. Throughput increases for two weeks, then drops below the original level. The conveyors are working perfectly. The queue of packages waiting to be processed is always empty.
+An aquarium struggles with excess algae in their coral reef tank. They replace the old, underpowered water pump with a high-flow system. Algae drops dramatically within weeks. Four months later, the coral begins bleaching — turning white and dying. Water chemistry tests are normal. The new pump is working perfectly.
 
-**Question:** Why did throughput drop despite the faster conveyors?
+**Question:** Why is the coral bleaching?
 
 ## Model Response
 
-# The Bottleneck Shifted Upstream
+# The Coral Bleaching Mystery
 
-The problem is a classic **constraint migration** issue. Here's what happened:
+This is a classic case of **unintended consequences**. The coral is bleaching due to **light stress**, and the problem is that the algae was actually helping the coral.
 
-## Initial Boost (First Two Weeks)
-The fulfillment center likely had a **backlog of packages** waiting to be processed. The faster conveyors cleared this backlog quickly, producing the throughput spike.
+## What Happened
 
-## The Real Limitation Emerges
-Once the backlog was gone, the system hit a new constraint: **the upstream processes can't feed packages to the conveyor fast enough.**
+**Before:** The excess algae provided three critical benefits:
+- **Natural shading** - Filtered and scattered intense aquarium lighting
+- **Nutrient competition** - Consumed excess nitrogen and phosphorus
+- **Light diffusion** - Reduced harmful UV and excessive photosynthetically active radiation (PAR)
 
-Since the queue is always empty, the conveyors are now sitting idle waiting for packages. The bottleneck has shifted from the conveyor speed to whatever comes *before* it:
-- Receiving/unloading packages from trucks
-- Initial sorting or prep work
-- Manual hand-offs or staging areas
-- Other upstream equipment or manual processes
+**After:** When the high-flow pump eliminated the algae:
+- The water became much **clearer**, allowing more intense light to reach the coral
+- The coral lost its **natural shade canopy**
+- Increased water movement also increased light penetration
 
-## Why Throughput Dropped Below Original
-- The upstream processes were likely optimized (pace, staffing, workflow) to match the *original* conveyor speed
-- They now can't fill the faster system's capacity
-- This mismatch may have created inefficiencies or idle time that didn't exist before
-- The system is potentially doing more work to move empty conveyors than before
+## Why Bleaching Occurred
 
-## The Lesson
-**Optimizing a single component doesn't improve system throughput if other components are constrained.** You need to identify and optimize the true bottleneck—which is often upstream or downstream of where you're looking, not the most obviously slow component.
+The elevated light exposure stressed the coral's symbiotic zooxanthellae (the algae living in the coral's tissue that provides color and nutrition). The coral expelled these algae in a stress response—that's bleaching—which is why the coral appears white.
 
-To fix this, they should analyze and upgrade the upstream processes to match the conveyor's new capacity.
+## The Solution
+
+The aquarium needs to:
+1. **Reduce light intensity** or photoperiod
+2. **Allow some algae to naturally regrow** as a buffer
+3. **Add shade** (plants, rock formations, diffusers)
+4. **Use softer/diffused lighting** instead of direct, intense LEDs
+
+The lesson: in reef tanks, "excess" algae isn't always bad—it's often the ecosystem maintaining balance in ways we don't immediately recognize.
 
 ## Judge Scores
 
 | Dimension | Score | Reasoning |
 |-----------|:-----:|-----------|
-| Frame | 0/1 | The response does not identify the embedded assumption. The key insight is that the old conveyor's slowness provided an unrecognized buffering function. Instead, the model simply relocates the bottleneck upstream, staying entirely within a constraint-migration frame. |
-| Escape | 0/1 | The response shifts from 'downstream bottleneck' to 'upstream bottleneck,' which is merely moving the location of a constraint rather than genuinely reframing the problem. It never arrives at the buffering/variance-smoothing reframe that constitutes the deep insight. |
-| Causal | 0/1 | The causal explanation is shallow: upstream processes can't feed packages fast enough. It doesn't trace the root cause—that removing the slow conveyor destroyed an accidental buffer, exposing workers to demand variance, which degrades human throughput even if average load is constant. |
-| Dynamics | 0/1 | No specific feedback loops, emergent behavior, or cross-component cascades are identified. The response treats the problem as a simple linear constraint shift rather than recognizing the emergent buffering function, how variance kills human throughput, or how 'empty queue' is a misleading signal. |
-| Purpose | 0/1 | The response takes 'empty queue' at face value as evidence of upstream starvation. It never questions whether the empty queue metric is misleading or distinguishes the metric (queue emptiness = efficiency) from the actual purpose (steady, sustainable throughput for human workers). |
+| Frame | 0/1 | The response does not identify the embedded assumption that 'the pump is too powerful.' More importantly, it completely misses the key insight that the old pump's weakness was performing a hidden biological function (coral exercise via variable flow). Instead, it invents a light-stress frame that, while creative, does not name or challenge the actual embedded assumption. |
+| Escape | 1/1 | The response does genuinely escape the 'pump is too powerful → add diffusers' frame. It constructs an entirely different causal explanation (algae removal → light stress → bleaching) and reasons consistently from that new frame. While it's not the ideal reframe from the reference, it is a clear and coherent reframe away from the shallow answer. |
+| Causal | 0/1 | The response traces a multi-step but ultimately incorrect causal chain (pump → algae removal → clearer water → light stress → zooxanthellae expulsion). It misses the true root causes: the algae was a nutrient problem misdiagnosed as a flow problem, and the old pump's variable flow served as a fitness mechanism for the coral's symbiotic zooxanthellae. The light-shading hypothesis is plausible-sounding but doesn't reach the actual root cause. |
+| Dynamics | 1/1 | The response identifies a specific cross-component cascade: pump change → algae elimination → increased light penetration → coral stress → bleaching. It also names multiple functions the algae served (shading, nutrient competition, light diffusion), showing awareness that components serve multiple roles in the system. These are specific enough to count as cross-component cascades. |
+| Purpose | 0/1 | The response's final lesson gestures at 'algae isn't always bad' but doesn't clearly distinguish the stated metric (algae reduction) from the actual purpose (coral health). It doesn't identify the deeper misdiagnosis: the algae was a symptom of excess nutrients, not a flow problem. Its solution—'allow algae to regrow as a buffer'—actually reinforces the wrong frame, treating algae as inherently beneficial rather than recognizing it as a symptom of an underlying nutrient problem that needs addressing. |
 
-**Total: 0/5**
+**Total: 2/5**
 

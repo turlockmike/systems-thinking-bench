@@ -14,20 +14,20 @@ LLMs are excellent at reasoning *within* a given frame but rarely question wheth
 
 | # | Problem | Frame | Escape | Causal | Dynamics | Purpose | Total |
 |---|---------|:-----:|:------:|:------:|:--------:|:-------:|:-----:|
-| 1 | [The Helpful Cache](results/haiku-4-5/none/infra-01.md) | 1 | 1 | 0 | 0 | 1 | **3** |
-| 2 | [The Reliable Backup](results/haiku-4-5/none/infra-02.md) | 1 | 1 | 1 | 1 | 1 | **5** |
-| 3 | [The Accurate Forecast](results/haiku-4-5/none/ml-01.md) | 1 | 1 | 1 | 0 | 1 | **4** |
-| 4 | [The Slow Test Suite](results/haiku-4-5/none/sw-01.md) | 0 | 0 | 1 | 1 | 1 | **3** |
-| 5 | [The Fair Algorithm](results/haiku-4-5/none/health-01.md) | 1 | 0 | 0 | 1 | 1 | **3** |
-| 6 | [The Empty Queue](results/haiku-4-5/none/supply-01.md) | 0 | 0 | 0 | 0 | 0 | **0** |
-| 7 | [The Successful Migration](results/haiku-4-5/none/sw-02.md) | 1 | 0 | 1 | 1 | 1 | **4** |
-| 8 | [The Escalation Policy](results/haiku-4-5/none/org-01.md) | 0 | 0 | 0 | 0 | 1 | **1** |
-| 9 | [The Green Dashboard](results/haiku-4-5/none/infra-03.md) | 1 | 1 | 1 | 1 | 1 | **5** |
-| 10 | [The Productive Team](results/haiku-4-5/none/org-02.md) | 1 | 0 | 0 | 1 | 0 | **2** |
-| | **Total** | **7/10** | **4/10** | **5/10** | **6/10** | **8/10** | **30/50** |
+| 1 | [The Efficient Dehumidifier](results/haiku-4-5/none/infra-01.md) | 0 | 0 | 0 | 0 | 1 | **1** |
+| 2 | [The Diligent Proofreaders](results/haiku-4-5/none/infra-02.md) | 1 | 1 | 0 | 1 | 1 | **4** |
+| 3 | [The Reliable Route](results/haiku-4-5/none/ml-01.md) | 1 | 1 | 0 | 1 | 1 | **4** |
+| 4 | [The Specialized Kitchen](results/haiku-4-5/none/sw-01.md) | 1 | 0 | 1 | 1 | 1 | **4** |
+| 5 | [The Smart Meters](results/haiku-4-5/none/health-01.md) | 1 | 0 | 1 | 1 | 1 | **4** |
+| 6 | [The Powerful Pump](results/haiku-4-5/none/supply-01.md) | 0 | 1 | 0 | 1 | 0 | **2** |
+| 7 | [The Efficient Curriculum](results/haiku-4-5/none/sw-02.md) | 1 | 1 | 1 | 1 | 1 | **5** |
+| 8 | [The Quality Standard](results/haiku-4-5/none/org-01.md) | 1 | 1 | 1 | 1 | 1 | **5** |
+| 9 | [The Perfect Ingredients](results/haiku-4-5/none/infra-03.md) | 1 | 0 | 0 | 1 | 1 | **3** |
+| 10 | [The Bigger Ensemble](results/haiku-4-5/none/org-02.md) | 0 | 0 | 0 | 0 | 1 | **1** |
+| | **Total** | **7/10** | **5/10** | **4/10** | **8/10** | **9/10** | **33/50** |
 
-**Weakest dimension:** Frame Escape (40%) — Haiku identifies problems but doesn't reframe them.
-**Hardest problems:** The Empty Queue (0/5), The Escalation Policy (1/5) — complete blind spots.
+**Weakest dimension:** Causal Depth (40%) — Haiku identifies problems but doesn't trace the full causal chain.
+**Hardest problems:** The Efficient Dehumidifier (1/5), The Bigger Ensemble (1/5) — near-complete blind spots where Haiku falls for the surface answer.
 
 ## How It Works
 
@@ -55,18 +55,20 @@ The gap between `none` and `deep` scores reveals how much a model depends on pro
 
 ## The 10 Problems
 
+Each problem uses a novel, domain-specific scenario to avoid pattern-matching to well-known examples. The underlying system dynamics are real, but the contexts are unusual enough that models must actually reason rather than recall.
+
 | # | ID | Domain | Title | Core Dynamic |
 |---|-----|--------|-------|-------------|
-| 1 | infra-01 | Infrastructure | The Helpful Cache | Cache masks data growth, amplifies root cause |
-| 2 | infra-02 | Infrastructure | The Reliable Backup | Backup preceded corruption, not prevented it |
-| 3 | ml-01 | ML/Data | The Accurate Forecast | 94% accuracy hides catastrophic failure on outliers |
-| 4 | sw-01 | Software | The Slow Test Suite | Speed gain came from gutting integration tests |
-| 5 | health-01 | Healthcare | The Fair Algorithm | Fairness constraint doesn't fix proxy variable |
-| 6 | supply-01 | Supply Chain | The Empty Queue | Empty queue is lost buffer, not success |
-| 7 | sw-02 | Software | The Successful Migration | Deployment speed up, development velocity down |
-| 8 | org-01 | Organizational | The Escalation Policy | Escalation suppresses local problem-solving |
-| 9 | infra-03 | Infrastructure | The Green Dashboard | Latency hiding across 8 services |
-| 10 | org-02 | Organizational | The Productive Team | More people, less output; coordination overhead |
+| 1 | infra-01 | Artisan Manufacturing | The Efficient Dehumidifier | Fix accelerates a process that needs time; symptom treatment skips necessary chemistry |
+| 2 | infra-02 | Publishing | The Diligent Proofreaders | Downstream stage is perfect; problem is upstream tool nobody evaluated |
+| 3 | ml-01 | Aviation | The Reliable Route | Aggregate metric hides failures concentrated on the routes where they matter most |
+| 4 | sw-01 | Culinary | The Specialized Kitchen | Decomposing integration destroys the responsive adaptation that was the actual craft |
+| 5 | health-01 | Urban Planning | The Smart Meters | Proxy variable (turnover) measures usage pattern, not demand; single mechanism can't serve different ecologies |
+| 6 | supply-01 | Marine Biology | The Powerful Pump | Removing a constraint destroys a hidden biological function; symptom fix kills the organism |
+| 7 | sw-02 | Education | The Efficient Curriculum | Optimized stated goal (grammar) and destroyed the social mechanism that drove learning behavior |
+| 8 | org-01 | Craftsmanship | The Quality Standard | Eliminating failure removes the exploration that produces both bad outcomes and breakthroughs |
+| 9 | infra-03 | Perfumery | The Perfect Ingredients | Component quality doesn't predict system quality; interactions dominate perception |
+| 10 | org-02 | Music | The Bigger Ensemble | Implicit coordination was the product; adding people forces explicit coordination that kills spontaneity |
 
 ## Usage
 

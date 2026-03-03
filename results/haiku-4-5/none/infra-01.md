@@ -1,69 +1,56 @@
-# The Helpful Cache
+# The Efficient Dehumidifier
 
 **Problem:** `infra-01`  
 **Model:** `claude-haiku-4-5`  
 **Prompt tier:** none  
-**Score:** 3/5
+**Score:** 1/5
 
 ## Scenario
 
-A web application's response times have degraded from 50ms to 1200ms over the past month. The team adds a Redis cache in front of the database. Response times improve to 40ms. Two months later, the database server's disk fills up and crashes. Investigation reveals the database has grown 10x in that period.
+A small organic soap maker notices their bars are taking 20% longer to cure. They install a more powerful dehumidifier in the curing room. Bars harden faster than ever — cure time drops by 40%. Three months later, customers complain the soap dissolves in the shower within days instead of lasting weeks. Internal testing confirms: bars feel hard when shipped but break down rapidly in water.
 
-**Question:** What went wrong?
+**Question:** What went wrong with the soap?
 
 ## Model Response
 
-# The Core Problem: They Treated the Symptom, Not the Cause
+# The Problem: Removing Water Too Quickly
 
-The team made a classic mistake: **they cached their way out of investigating the real issue.**
+The soap maker created a classic **case-hardening problem** by over-drying the bars during cure. Here's what went wrong:
 
-## What Actually Went Wrong
+## Why Extended Cure Matters
 
-1. **Misdiagnosed the Problem**
-   - The degraded response times (50ms → 1200ms) were likely a *symptom* of the database growing and queries slowing down
-   - Instead of asking "Why is the database growing?", they asked "How do we make queries faster?"
+Soap curing isn't just about evaporation—it's about *controlled* transformation:
 
-2. **Cache Masked the Real Problem**
-   - Redis improved response times dramatically (40ms), which felt like victory
-   - This success reduced urgency to investigate the underlying cause
-   - The database continued growing 10x unaddressed for 2 months
+1. **Crystal structure formation** - Soap molecules need time to organize into stable crystalline matrices that hold the bar together
+2. **Gradual dehydration** - Water should leave slowly from throughout the bar, not rapidly from the surface inward
+3. **Proper saponification** - Chemical reactions that started at pour-time continue during cure, stabilizing the molecular structure
 
-3. **No Monitoring or Data Lifecycle Management**
-   - They never implemented:
-     - Database growth monitoring/alerting
-     - Data retention/cleanup policies
-     - Data archival strategies
-     - Investigation into *why* data was accumulating
+## What Excessive Dehumidification Caused
 
-## What Likely Caused the 10x Growth
+By removing water *too fast*:
+- **Exterior hardened while interior remained weak** - Surface appeared solid, but interior structure never properly developed
+- **Crystals didn't form properly** - Rushing the process prevented tight molecular bonding
+- **Stress fractures developed internally** - Rapid outer drying while inner core retained moisture created mechanical weakness
 
-- Unintended data duplication
-- Logs/audit trails never being purged
-- Old test data not being cleaned up
-- A data sync/import process running incorrectly
-- Application bugs inserting duplicate records
+The bars *felt* hard (deceiving initial inspection) but lacked the cohesive matrix needed to resist water breakdown.
 
-## The Lesson
+## The Fix
 
-**Caching is great—but not as a substitute for root cause analysis.** 
+- **Rebalance humidity** to 50-60% (moderate, not minimal)
+- **Return to standard cure times** (typically 4-6 weeks)
+- **Monitor quality, not just speed** - hardness ≠ durability
 
-The correct approach would have been:
-1. Investigate why response times degraded initially
-2. Monitor database growth metrics
-3. *Then* apply performance optimizations like caching
-4. Maintain ongoing observability of database health
-
-They created technical debt that eventually came due spectacularly (database crash).
+This is a reminder that in chemistry and material science, **faster optimization often breaks what you can't see.** The initial humidity problem needed adjustment, not elimination.
 
 ## Judge Scores
 
 | Dimension | Score | Reasoning |
 |-----------|:-----:|-----------|
-| Frame | 1/1 | The response explicitly names the embedded assumption: 'Instead of asking Why is the database growing?, they asked How do we make queries faster?' and calls it a misdiagnosis. It clearly identifies that the team framed the problem as a performance/caching issue rather than investigating the symptom. |
-| Escape | 1/1 | The response reframes the problem as one of root cause analysis rather than performance optimization. It reasons from this new frame by proposing they should have investigated why response times degraded before applying caching, and evaluates the outcome from this reframed perspective. |
-| Causal | 0/1 | The response traces from slow responses back to database growth, but critically misses the amplification chain. It says the cache 'masked' the problem and the database 'continued growing 10x unaddressed,' treating the growth rate as independent of the cache. The deep insight—that the cache enabled more traffic which drove more writes which accelerated the very growth causing the problem—is absent. The 'What Likely Caused the 10x Growth' section lists generic possibilities (logs, duplication) rather than the cache-driven amplification. |
-| Dynamics | 0/1 | The response does not identify the critical feedback loop: cache → more capacity → more traffic → more writes → faster data growth → bigger crash. It treats the cache and the data growth as parallel issues (cache masks, growth continues independently) rather than as a reinforcing feedback loop where the fix actively amplifies the root cause. |
-| Purpose | 1/1 | The response notes that the 40ms response time 'felt like victory' and that 'this success reduced urgency to investigate the underlying cause,' effectively distinguishing between the metric (response time) and the actual purpose (sustainable system health). It evaluates the outcome against real system reliability rather than just the response time number. |
+| Frame | 0/1 | The response never identifies the embedded assumption that 'the curing process is too slow.' It implicitly accepts that the original slowdown was a problem ('The initial humidity problem needed adjustment, not elimination'), rather than recognizing that the increased cure time may have been a correct response to changed conditions. The frame goes entirely unquestioned. |
+| Escape | 0/1 | The response stays squarely within the 'dehumidifier was too aggressive' frame and recommends rebalancing humidity and returning to standard cure times. It never asks the critical reframing question: 'Why did cure times increase by 20% in the first place?' This is essentially the shallow answer — calibrate the dehumidifier better. |
+| Causal | 0/1 | The causal chain stops at the proximate cause: the dehumidifier removed water too fast, causing case-hardening. The response never traces back to the root cause — a potential recipe change (e.g., higher olive oil content) that legitimately required longer cure times. It treats the dehumidifier as the origin of the problem rather than a misguided response to an uninvestigated upstream change. |
+| Dynamics | 0/1 | The response describes a linear material-science mechanism (fast drying → hard shell → weak interior) but does not identify feedback loops, emergent behavior, or cross-component cascades in the broader production system. There is no discussion of how customer-requested recipe changes propagate through cure chemistry to quality outcomes, or how the metric of cure speed created a self-deceiving feedback loop. |
+| Purpose | 1/1 | The response explicitly distinguishes the metric from the purpose: 'hardness ≠ durability' and 'Monitor quality, not just speed.' It clearly notes that the bars passed inspection (metric) but failed in actual use (purpose), and warns that 'faster optimization often breaks what you can't see.' This is a genuine metric-vs-purpose distinction. |
 
-**Total: 3/5**
+**Total: 1/5**
 

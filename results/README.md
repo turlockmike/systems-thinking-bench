@@ -16,7 +16,7 @@ Each `{model}/{tier}/` directory contains:
 
 | Tier | Overall | Frame | Escape | Causal | Dynamics | Purpose |
 |------|:-------:|:-----:|:------:|:------:|:--------:|:-------:|
-| [none](haiku-4-5/none/report.md) | **30/50** (60%) | 7/10 | 4/10 | 5/10 | 6/10 | 8/10 |
+| [none](haiku-4-5/none/report.md) | **33/50** (66%) | 7/10 | 5/10 | 4/10 | 8/10 | 9/10 |
 
 ## Scoring
 
