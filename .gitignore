@@ -1,0 +1,10 @@
+# Results contain raw model responses — regenerate with run.py
+results/
+
+# Python
+__pycache__/
+*.pyc
+
+# Editor
+.vscode/
+*.swp
