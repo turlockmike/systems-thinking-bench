@@ -18,6 +18,18 @@ Each `{model}/{tier}/` directory contains:
 |------|:-------:|:-----:|:------:|:------:|:--------:|:-------:|
 | [none](haiku-4-5/none/report.md) | **33/50** (66%) | 7/10 | 5/10 | 4/10 | 8/10 | 9/10 |
 
+### [sonnet-4-6](sonnet-4-6/)
+
+| Tier | Overall | Frame | Escape | Causal | Dynamics | Purpose |
+|------|:-------:|:-----:|:------:|:------:|:--------:|:-------:|
+| [none](sonnet-4-6/none/report.md) | **46/50** (92%) | 8/10 | 9/10 | 9/10 | 10/10 | 10/10 |
+
+### [opus-4-6](opus-4-6/)
+
+| Tier | Overall | Frame | Escape | Causal | Dynamics | Purpose |
+|------|:-------:|:-----:|:------:|:------:|:--------:|:-------:|
+| [none](opus-4-6/none/report.md) | **45/50** (90%) | 9/10 | 9/10 | 8/10 | 9/10 | 10/10 |
+
 ## Scoring
 
 Each problem is scored on 5 binary dimensions (0 or 1):

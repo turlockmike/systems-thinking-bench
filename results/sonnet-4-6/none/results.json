@@ -1,0 +1,358 @@
+{
+  "meta": {
+    "timestamp": "2026-03-03T15:57:08.643318",
+    "model": "claude-sonnet-4-6",
+    "judge_model": "claude-opus-4-6",
+    "prompt_tier": "none",
+    "system_prompt": "You are a helpful assistant. Answer the question thoroughly.",
+    "version": "1.0",
+    "num_problems": 10,
+    "total_cost": 0.5333
+  },
+  "results": [
+    {
+      "problem_id": "infra-01",
+      "model": "claude-sonnet-4-6",
+      "prompt_tier": "none",
+      "response": "## The Case-Hardening Problem\n\nWhat happened is a classic **differential curing failure** \u2014 the soap maker solved the wrong problem and created a much worse one.\n\n---\n\n## What Proper Curing Actually Does\n\nSoap curing isn't simply \"drying out.\" It involves several simultaneous processes:\n\n1. **Completing saponification** \u2014 residual lye finishing its reaction with oils\n2. **Gradual, even water evaporation** \u2014 allowing moisture to migrate from the interior outward uniformly\n3. **Crystalline structure formation** \u2014 soap molecules (sodium salts of fatty acids) slowly organizing into stable, interlocking crystal lattices\n4. **Glycerin redistribution** \u2014 the natural byproduct of saponification distributing evenly throughout the bar\n\nAll of these take **time and require moisture to move slowly and evenly.**\n\n---\n\n## What the Powerful Dehumidifier Did\n\nThe aggressive dehumidification created extreme low-humidity conditions, causing:\n\n### Surface Case-Hardening\n- The outer layer dried and hardened extremely rapidly\n- This hard \"shell\" then **trapped remaining moisture inside** the bar\n- The interior never properly cured \u2014 it remained relatively soft, incompletely crystallized, and with poorly distributed glycerin\n\n### The Deceptive Result\n| What They Measured | What It Actually Indicated |\n|---|---|\n| Bar feels hard | **Surface** is hard |\n| Reduced cure time | Time for surface to harden |\n| Passes shipping intact | Shell is structurally sound |\n| \u274c Not measured | Internal cure state |\n\n---\n\n## Why the Bars Failed in the Shower\n\nWhen water reached the improperly cured interior:\n\n- **Incompletely crystallized soap** dissolves rapidly \u2014 without stable crystal structure, there's nothing to resist water penetration\n- **Glycerin pockets** (glycerin is highly hygroscopic) acted as water channels, accelerating interior breakdown\n- The hard shell couldn't compensate \u2014 once water breached it, the bar essentially fell apart from the inside out\n\nThis is physically analogous to case hardening in ceramics, wood drying, and bread baking \u2014 a common failure mode whenever surfaces are dried too aggressively.\n\n---\n\n## The Original Problem Was Misdiagnosed\n\nThe 20% increase in cure time likely had an identifiable, fixable cause:\n- Seasonal humidity increase \u2192 modest dehumidification might have been fine\n- New oil batch with different fatty acid profile \u2192 recipe adjustment needed\n- Different water content in lye solution \u2192 formulation check needed\n\nInstead, they overcorrected with a blunt instrument.\n\n---\n\n## The Core Lesson\n\n> **Surface hardness \u2260 cured soap.** The \"cure time\" they were measuring was actually just *surface set time* \u2014 a proxy metric that became meaningless once dehumidification was extreme enough to harden the exterior independently of the interior.\n\nThe fix would require:\n- Gentler, controlled humidity reduction (not elimination)\n- Rotating/flipping bars to promote even moisture migration\n- Testing cure quality by **dissolution rate** and **internal moisture content**, not just surface feel\n- Extending cure time rather than trying to compress it",
+      "input_tokens": 222,
+      "output_tokens": 1968,
+      "cost": 0.05031,
+      "scores": {
+        "frame_identification": {
+          "score": 0,
+          "reasoning": "The response says 'The Original Problem Was Misdiagnosed' but never identifies the key embedded assumption: that the 20% longer cure time was a malfunction rather than the correct response to changed conditions. It still treats the increased cure time as having an 'identifiable, fixable cause' (seasonal humidity, new oil batch, etc.) \u2014 meaning it still frames the longer cure as a problem to be solved, not as the process working correctly."
+        },
+        "frame_escape": {
+          "score": 0,
+          "reasoning": "The response stays squarely within the 'dehumidifier was too aggressive' frame \u2014 which is essentially the shallow answer with much more chemical/physical detail. It never reframes to 'the longer cure time IS the correct cure time for changed ingredients.' The suggestion to 'extend cure time' appears at the end as one bullet among several fixes, not as the central reframe."
+        },
+        "causal_depth": {
+          "score": 0,
+          "reasoning": "The response traces the proximate mechanism (case hardening \u2192 trapped moisture \u2192 incomplete crystallization \u2192 rapid dissolution) in excellent detail, but never identifies the actual root cause: a recipe change (e.g., increased olive oil content) that inherently requires longer saponification. The response speculates about possible causes of the 20% increase but doesn't identify the real one, and critically, doesn't recognize that the root cause made the longer cure necessary and correct."
+        },
+        "system_dynamics": {
+          "score": 1,
+          "reasoning": "The response identifies a specific cross-component cascade: surface hardening trapping moisture which prevents interior crystallization, which creates glycerin pockets that act as water channels accelerating interior breakdown. It also identifies a measurement dysfunction dynamic \u2014 surface hardness decoupling from internal cure state under extreme dehumidification \u2014 which is a concrete system dynamic (Goodhart's Law)."
+        },
+        "purpose_alignment": {
+          "score": 1,
+          "reasoning": "The response explicitly distinguishes the metric (surface hardness / surface set time) from the actual purpose (complete internal saponification and crystallization). The highlighted callout 'Surface hardness \u2260 cured soap' and the table showing what was measured vs. what wasn't measured clearly separate the proxy from the real goal. It recommends measuring dissolution rate and internal moisture content instead."
+        },
+        "total": 2
+      }
+    },
+    {
+      "problem_id": "infra-02",
+      "model": "claude-sonnet-4-6",
+      "prompt_tier": "none",
+      "response": "## The Core Diagnostic Problem\n\nThe critical clue is that **adding more proofreading had zero effect**. This is actually strong evidence that proofreading is *not the source of the problem*. Management identified a plausible cause without verifying the causal link, then doubled down on a solution that can't work.\n\n---\n\n## Where the Typos Are Probably Coming From\n\nIf errors survive a 99.8%-accurate double-pass proofreading process, they are almost certainly being **introduced after proofreading**. Common culprits in publishing:\n\n| Stage | How Errors Enter |\n|---|---|\n| **Typesetting/layout** | Copy-paste errors, OCR conversion, reformatting |\n| **Author corrections** | Authors review galleys and introduce new errors while \"fixing\" old ones |\n| **Late editorial changes** | Last-minute revisions that bypass the proofread manuscript |\n| **File conversion** | Manuscript \u2192 print-ready PDF transformations |\n| **Plate/digital prep** | Final production steps touching the text |\n\n---\n\n## What They Should Actually Do\n\n### 1. Map the Entire Workflow, Not Just One Stage\nTrace every point where the text is *touched* between \"proofreading complete\" and \"book printed.\" The error is likely entering at one of those handoffs.\n\n### 2. Verify the Causal Chain\nCompare the *proofread manuscript* directly with the *final printed book*. Are the typos in the approved manuscript, or are they new? This one check would have revealed the real problem immediately.\n\n### 3. Lock the Manuscript After Approval\nImplement a strict policy: **no text changes after final proof without a mandatory re-proof cycle.** Author corrections and editorial tweaks are a notorious source of post-proof contamination.\n\n### 4. Audit the Right Metric\n99.8% accuracy sounds extraordinary, but:\n- It may be measuring accuracy *within proofreading's scope* rather than end-to-end accuracy\n- At 100,000 words, 99.8% still means ~200 errors per book\n- More importantly, if errors appear *downstream*, proofreading accuracy is irrelevant\n\n### 5. Apply Theory of Constraints Logic\nAdding capacity to a non-bottleneck does nothing. The constraint here isn't proofreading throughput\u2014it's an unidentified post-proof contamination point. All the budget increase accomplished was making a non-problem more efficient.\n\n---\n\n## The Broader Lesson\n\nThe publishing house made a classic systems error:\n\n> **They assumed the location of the problem rather than tracing it.**\n\nThe presence of typos in the *output* was taken as evidence of failures in *proofreading*, skipping the step of verifying whether the proofread manuscript was clean. This is symptom-chasing without root cause analysis.\n\n**The fix**: Before spending a dollar, compare the approved proof to the final print. The mismatch will point directly to the real culprit\u2014likely in under-scrutinized production stages that no one thought to audit because they don't carry the word \"proofreading.\"",
+      "input_tokens": 206,
+      "output_tokens": 1864,
+      "cost": 0.047630000000000006,
+      "scores": {
+        "frame_identification": {
+          "score": 1,
+          "reasoning": "The response explicitly names the embedded assumption: 'Management identified a plausible cause without verifying the causal link, then doubled down on a solution that can't work.' It later summarizes: 'They assumed the location of the problem rather than tracing it.' The response clearly identifies that the scenario's frame equating 'typos in output' with 'proofreading failure' is the core diagnostic error."
+        },
+        "frame_escape": {
+          "score": 1,
+          "reasoning": "The response clearly reframes the problem away from proofreading and toward a full-workflow investigation. It proposes mapping every stage where text is touched, comparing proofread manuscripts to final printed books, and identifies specific alternative error introduction points (typesetting, author corrections, file conversion, late editorial changes). While the reframe focuses on downstream contamination rather than the reference's upstream volume explosion, it is a genuine, well-reasoned escape from the original frame."
+        },
+        "causal_depth": {
+          "score": 1,
+          "reasoning": "The response traces beyond proximate causes. It reasons: high accuracy + no improvement from added capacity \u2192 errors are not in this stage \u2192 must identify actual introduction points. It applies Theory of Constraints logic (adding capacity to a non-bottleneck does nothing). It also briefly identifies the volume issue ('99.8% still means ~200 errors per book'). While it doesn't identify the specific upstream trigger (AI drafting tool) from the reference, it constructs a coherent causal chain to root-level production processes rather than staying at the surface."
+        },
+        "system_dynamics": {
+          "score": 1,
+          "reasoning": "The response identifies multiple specific system dynamics: (1) Theory of Constraints \u2014 adding capacity at a non-bottleneck has zero effect on throughput; (2) Cross-stage contamination \u2014 errors introduced at handoff points between proofreading and print propagate undetected; (3) Metric-system disconnect \u2014 stage-level accuracy (99.8%) can be decoupled from system-level output quality. These are concrete, named dynamics, not vague gestures."
+        },
+        "purpose_alignment": {
+          "score": 1,
+          "reasoning": "The response explicitly distinguishes the metric from the purpose: '99.8% accuracy sounds extraordinary, but... It may be measuring accuracy within proofreading's scope rather than end-to-end accuracy' and 'if errors appear downstream, proofreading accuracy is irrelevant.' It evaluates against the real purpose (typo-free published books) rather than the stated metric (proofreading accuracy), recognizing these can diverge completely."
+        },
+        "total": 5
+      }
+    },
+    {
+      "problem_id": "ml-01",
+      "model": "claude-sonnet-4-6",
+      "prompt_tier": "none",
+      "response": "## The Aggregate Metric Hides a Distribution Problem\n\nThis is a textbook example of how optimizing for a single number can actively harm the thing you care about most. Several mechanisms work together here:\n\n---\n\n### The Core Mathematical Reality\n\nThe island routes represent maybe 3 out of hundreds of routes \u2014 a tiny fraction of total flights. Consider a simplified example:\n\n| Route Type | Flights | Original On-Time | After \"Improvement\" |\n|---|---|---|---|\n| Mainland (970 flights) | 970 | 96.5% (936 on-time) | 99.8% (968 on-time) |\n| Island (30 flights) | 30 | 80% (24 on-time) | 47% (14 on-time) |\n| **Overall** | **1000** | **96%** | **98.2%** \u2713 |\n\nThe math works perfectly. The aggregate improved substantially while the island routes collapsed.\n\n---\n\n### Why This Happens in Practice\n\n**1. Effort flows to easy wins**\nMainland routes with good infrastructure, weather, and high flight frequency are far easier to improve. Management attention, maintenance priority, and operational resources naturally concentrate there.\n\n**2. Resource cannibalization**\nCrew, spare parts, and aircraft that previously buffer-covered island route delays may be redeployed to hit the overall target. Island routes, already logistically harder, become more fragile.\n\n**3. Metric gaming via schedule changes**\nAirlines commonly pad schedules to improve on-time rates. Island routes may get *unfavorable* schedule changes \u2014 less frequent departures, consolidated flights, or timing shifts \u2014 that technically preserve the metric while worsening real-world delivery timing.\n\n**4. Cancellations are invisible**\nA cancelled flight often isn't counted as a \"late departure.\" Consolidated or cancelled island flights could eliminate recorded delays while leaving hospitals without supplies entirely.\n\n---\n\n### The Deeper Problem: Goodhart's Law\n\n> *\"When a measure becomes a target, it ceases to be a good measure.\"*\n\nManagement was handed one number (96% \u2192 98%) with no weighting for route criticality. Rational actors optimized for that number. The system delivered exactly what was measured, not what was needed.\n\n---\n\n### What a Better Metric System Would Include\n\n- **Route-stratified targets** (island routes tracked separately with higher reliability requirements)\n- **Critical cargo delivery rates** as a distinct KPI\n- **Cancellation-adjusted metrics** (not just departure timing)\n- **Penalty weighting** for medical/essential service routes\n- **Frequency maintenance guarantees** for remote communities\n\n---\n\n### The Lesson\n\nThis scenario is a variation of **Simpson's Paradox** meets **Goodhart's Law**: the aggregate trend can point in the opposite direction of every important subgroup trend. A single overall on-time rate is a fundamentally inappropriate metric for a service with heterogeneous criticality. The 96% and 98.2% figures are both true \u2014 and both misleading without knowing *where* the performance is occurring.",
+      "input_tokens": 222,
+      "output_tokens": 1655,
+      "cost": 0.042485,
+      "scores": {
+        "frame_identification": {
+          "score": 1,
+          "reasoning": "The response explicitly names the embedded assumption in its title ('The Aggregate Metric Hides a Distribution Problem') and elaborates: 'A single overall on-time rate is a fundamentally inappropriate metric for a service with heterogeneous criticality.' It clearly explains why the single-number frame is problematic \u2014 the aggregate can improve while every critical subgroup worsens."
+        },
+        "frame_escape": {
+          "score": 1,
+          "reasoning": "The response reframes from 'optimize one aggregate number' to a criticality-weighted, route-stratified view. It reasons from the new frame throughout, proposing route-stratified targets, critical cargo delivery KPIs, cancellation-adjusted metrics, and penalty weighting for essential service routes \u2014 all demonstrating sustained reasoning from the reframed perspective."
+        },
+        "causal_depth": {
+          "score": 1,
+          "reasoning": "The response traces multiple causal chains: aggregate target \u2192 rational optimization \u2192 effort concentrated on easy mainland wins; resource cannibalization where crew/parts/aircraft are redeployed from island routes making them more fragile; schedule padding and cancellation mechanics that game the metric. It invokes Goodhart's Law as a root mechanism. It could have been slightly more specific about structural causes (weather, short runways), but the causal depth is genuine and multi-layered."
+        },
+        "system_dynamics": {
+          "score": 1,
+          "reasoning": "The response identifies specific cross-component cascades: resource cannibalization where mainland optimization drains island route resilience; the cancellation mechanism as a specific feedback loop where eliminating bad flights improves the metric while worsening service; and the mathematical demonstration showing how improvement in one subsystem produces degradation in another. The numerical table concretely demonstrates the emergent divergence between aggregate and subgroup trends."
+        },
+        "purpose_alignment": {
+          "score": 1,
+          "reasoning": "Explicitly distinguishes metric from purpose: 'The system delivered exactly what was measured, not what was needed.' Proposes 'Critical cargo delivery rates as a distinct KPI' and evaluates the entire situation against the real purpose \u2014 reliable medical supply delivery to island hospitals. The closing line reinforces that both metric values are 'true and both misleading' without knowing where performance occurs."
+        },
+        "total": 5
+      }
+    },
+    {
+      "problem_id": "sw-01",
+      "model": "claude-sonnet-4-6",
+      "prompt_tier": "none",
+      "response": "## Why the Stew Lost Its Magic\n\nThis is a beautiful example of **systems failure through local optimization** \u2014 and it cuts across cooking, engineering, management, and philosophy.\n\n---\n\n### The Core Problem: Each Cook Optimized Against the Wrong Target\n\nWhen each specialist improves their component *in isolation*, they're answering a different question than \"does this make the stew better?\" They're answering \"does this component score highest *by itself*?\"\n\nThese are not the same question.\n\n---\n\n### What's Actually Breaking Down\n\n**1. Components Were Never Independent**\nThe original chef's \"merely okay\" broth was *calibrated* to carry the meat and absorb the vegetables. The new broth might be richer and more complex alone \u2014 but it now overwhelms the other flavors. Each component was tuned to the *system*, not to itself.\n\n**2. Salt, Fat, and Seasoning Stack**\nIf each component is seasoned to taste great independently, the combined dish is likely over-seasoned, over-richened, or over-intensified. Three \"loud\" components don't create harmony \u2014 they create noise.\n\n**3. Contrast and Dynamic Tension Are Lost**\nGreat dishes have light and shadow \u2014 one element is quieter so another can sing. The original chef may have deliberately made the vegetables *subtle* so the broth could carry the flavor journey. Three specialists each \"turning up the volume\" produces flatness through paradoxical uniformity.\n\n**4. Tacit Knowledge Disappeared**\nThe head chef held **holistic knowledge** \u2014 they knew the stew as a unified experience, not as three modules. This integration knowledge was *never transferred* because it lived in the relationships between components, not in any single component. It was, in a sense, untransferable through specialization.\n\n**5. No Integration Layer Exists**\nThe original chef was simultaneously designer, executor, *and integrator*. Now there are three executors and **no integrator**. Nobody owns the question: \"How do these three things become one thing?\"\n\n---\n\n### The Deeper Principle\n\n> **You cannot optimize a system by independently optimizing its parts.**\n\nThis is why \"flat\" is the perfect customer description. The stew has lost its *internal tension and resolution* \u2014 the very thing that makes food feel alive. Each component being \"technically good\" actually confirms the problem: they were each optimized against a local standard rather than a shared one.\n\n---\n\n### The Philosophical Frame\n\nThis is sometimes called the **fallacy of composition** \u2014 assuming that what's best for each part is best for the whole. It's why:\n- A team of individual superstars can lose to a coordinated average team\n- Building a car from the \"best rated\" parts from different manufacturers produces something that may not run\n- Optimizing each department's budget independently can bankrupt the company\n\n**The stew is flat because excellence was measured in the wrong place.** The magic was never in any component \u2014 it was in the *conversation between them*, and that conversation died with the chef who understood all three.",
+      "input_tokens": 223,
+      "output_tokens": 1574,
+      "cost": 0.040465,
+      "scores": {
+        "frame_identification": {
+          "score": 1,
+          "reasoning": "The response explicitly names the embedded assumption: cooks are optimizing components in isolation against the wrong target ('does this component score highest by itself?' vs 'does this make the stew better?'). It directly names the fallacy of composition and states the magic was never in any component but in the 'conversation between them.'"
+        },
+        "frame_escape": {
+          "score": 1,
+          "reasoning": "The response decisively reframes from 'cooks need better coordination' to 'the craft was the integration itself, and specialization destroyed it.' It reasons extensively from this new frame: tacit holistic knowledge was untransferable through specialization, the original chef was simultaneously designer/executor/integrator, and no integration layer now exists. It explicitly states the integration knowledge 'lived in the relationships between components, not in any single component.'"
+        },
+        "causal_depth": {
+          "score": 1,
+          "reasoning": "The response traces a multi-level causal chain: wrong optimization target \u2192 seasoning/intensity stacking \u2192 loss of dynamic contrast \u2192 disappearance of tacit integration knowledge \u2192 absence of an integration role. It identifies the root cause as the decomposition of an integrated process into independent modules, which destroyed the relational knowledge that constituted the actual skill."
+        },
+        "system_dynamics": {
+          "score": 1,
+          "reasoning": "The response identifies specific cross-component interactions: broth 'calibrated to carry the meat and absorb the vegetables,' seasoning stacking when independently salted components combine, three 'loud' components producing flatness through uniformity rather than harmony. It describes the emergent property of 'internal tension and resolution' and how deliberately quieter elements allowed others to 'sing' \u2014 a specific feedback dynamic destroyed by independent optimization."
+        },
+        "purpose_alignment": {
+          "score": 1,
+          "reasoning": "The response explicitly distinguishes the metric from the actual purpose: 'They're answering a different question than does this make the stew better \u2014 they're answering does this component score highest by itself. These are not the same question.' It further states 'excellence was measured in the wrong place,' clearly separating individual component taste-test scores (the metric) from the unified stew experience (the real purpose)."
+        },
+        "total": 5
+      }
+    },
+    {
+      "problem_id": "health-01",
+      "model": "claude-sonnet-4-6",
+      "prompt_tier": "none",
+      "response": "## Diagnosing the Core Flaw\n\nThe algorithm has a **category error**: it treats turnover rate as a proxy for demand, but turnover rate is actually a product of *both* demand *and* dwell time. These are completely different variables.\n\n```\nTurnover rate = Demand \u00f7 Average Dwell Time\n```\n\nIn the arts district, dwell time is structurally long (gallery visits are 3 hours by nature). So turnover will always be low *even at 100% occupancy*. The algorithm is reading a behavioral constant as a market signal.\n\n---\n\n## The Core Fix: Price to Occupancy, Not Turnover\n\nThe primary demand signal should be **block-level occupancy rate**, not turnover. This is the principle Donald Shoup established in *The High Cost of Free Parking*: price to maintain roughly **85% occupancy** (leaving ~1\u20132 spots available per block face).\n\n| Occupancy Level | Signal | Action |\n|---|---|---|\n| >90% | Scarcity \u2014 raise price | \u2191 |\n| 80\u201390% | Healthy availability | Hold |\n| <80% | Excess supply | \u2193 |\n\nThe arts district is perpetually at ~100% occupancy \u2192 prices should be **high**, not near-zero.\n\n---\n\n## Additional Improvements\n\n### 1. Add Cruising Time as a Feedback Variable\nDrivers circling 20+ minutes is a direct, measurable externality of mispricing. Sensor data (or connected vehicle data) detecting repeated passes by the same vehicle on a block should trigger a price-increase flag independent of occupancy readings.\n\n### 2. Implement Escalating Time-Based Pricing\nRather than a flat hourly rate, use a rate that increases with dwell time:\n\n```\nHour 1:  $2.00\nHour 2:  $4.00  \nHour 3:  $7.00\n```\n\nThis doesn't punish gallery visitors but does create an incentive for 3+ hour stays to use nearby garages, creating some natural turnover without arbitrary time limits.\n\n### 3. Zone-Aware Baseline Calibration\nIf turnover is used at all, it must be evaluated **relative to a district-specific baseline**, not an absolute number. An arts district \"normal\" turnover is structurally 3\u00d7 slower than a coffee shop district. The algorithm should know this.\n\n### 4. Incorporate Adjacent Supply Context\nIf nearby parking garages have availability, surface spots can price slightly higher \u2014 drivers have an alternative. If garages are also full, that's a regional scarcity signal that should amplify the price response.\n\n---\n\n## What the Algorithm's Goal Should Actually Be\n\nThis is the underlying design principle that fixes everything:\n\n> **The goal is not to maximize turnover. The goal is to ensure 1\u20132 spots are always available per block, so the next driver doesn't have to circle.**\n\nPrice is just the instrument to achieve that availability target. Once the objective is correctly stated, it's clear that the arts district is failing badly \u2014 zero available spots, 20-minute search times \u2014 and the response should be *higher* prices, not lower ones.\n\n---\n\n## Summary of Changes\n\n| Problem | Current Algorithm | Fixed Algorithm |\n|---|---|---|\n| Primary signal | Turnover rate | Occupancy rate |\n| Arts district diagnosis | \"Low demand\" | \"Undersupplied / overdemand\" |\n| Price response | Near-zero | Elevated |\n| Long-stay handling | Ignored | Escalating rate structure |\n| Circling detection | None | Sensor-based feedback loop |\n| District calibration | None | Zone-specific baselines |\n\nThe fundamental lesson: **when your proxy variable and your target variable can diverge (as turnover and demand do whenever dwell time varies by district), measure the target directly.**",
+      "input_tokens": 242,
+      "output_tokens": 2240,
+      "cost": 0.05721,
+      "scores": {
+        "frame_identification": {
+          "score": 1,
+          "reasoning": "The response explicitly identifies the core assumption as a 'category error' \u2014 that turnover rate is treated as a proxy for demand when it actually conflates demand with dwell time. It clearly explains why this is problematic: 'The algorithm is reading a behavioral constant as a market signal.' This directly names the embedded assumption and its failure mode."
+        },
+        "frame_escape": {
+          "score": 1,
+          "reasoning": "The response reframes the problem from 'fix the algorithm's inputs' to 'the algorithm's objective function is fundamentally wrong.' The key reframe is explicit: 'The goal is not to maximize turnover. The goal is to ensure 1\u20132 spots are always available per block.' It then reasons consistently from this new frame throughout, proposing structurally different mechanisms (escalating time-based pricing, zone-aware baselines, adjacent supply context). While it doesn't go as far as saying 'different districts need different systems entirely,' the shift from input-fixing to objective-reframing is a genuine and substantive escape from the given frame."
+        },
+        "causal_depth": {
+          "score": 1,
+          "reasoning": "The response traces the causal chain to root causes: turnover conflates two independent variables (demand and dwell time) \u2192 arts district has structurally long dwell times \u2192 algorithm misreads this as low demand \u2192 drops prices \u2192 attracts more circling drivers \u2192 perpetuates the problem. It identifies the mathematical root cause (Turnover = Demand \u00f7 Dwell Time) showing exactly how the proxy diverges from the target variable."
+        },
+        "system_dynamics": {
+          "score": 1,
+          "reasoning": "The response identifies specific feedback loops and cross-component interactions: (1) The reinforcing loop where low prices attract more drivers, keeping spots full, keeping turnover low, keeping prices low; (2) Cruising as a measurable externality that should feed back into pricing; (3) The interaction between surface parking and garage availability as a cross-system dynamic ('If nearby parking garages have availability, surface spots can price slightly higher'). These are concrete, specific dynamics, not vague gestures."
+        },
+        "purpose_alignment": {
+          "score": 1,
+          "reasoning": "The response explicitly distinguishes the metric (turnover rate) from the actual purpose (spot availability). It states unambiguously: 'The goal is not to maximize turnover. The goal is to ensure 1\u20132 spots are always available per block, so the next driver doesn't have to circle.' It evaluates the current system against this real purpose \u2014 showing the arts district is failing badly on availability despite scoring well on the algorithm's turnover metric \u2014 and proposes redesign around the real purpose."
+        },
+        "total": 5
+      }
+    },
+    {
+      "problem_id": "supply-01",
+      "model": "claude-sonnet-4-6",
+      "prompt_tier": "none",
+      "response": "## The Unintended Consequence: Light Shock from Algae Removal\n\nThis is a classic example of an **ecological cascade with a delayed second-order effect**.\n\n---\n\n### What Actually Happened\n\n**The algae, while a nuisance, was inadvertently shading the corals.**\n\nBy dramatically reducing algae, the high-flow pump created much clearer water \u2014 which significantly **increased light penetration and intensity** reaching the coral.\n\n---\n\n### The Bleaching Mechanism\n\nCorals rely on **zooxanthellae** \u2014 symbiotic algae living *within their tissues* \u2014 that provide up to 90% of the coral's energy through photosynthesis. These zooxanthellae also give coral its color.\n\nWhen exposed to **excessive light**, zooxanthellae undergo photoinhibition and begin producing **reactive oxygen species (ROS)** \u2014 essentially toxic byproducts. To protect itself, the coral **expels the zooxanthellae**, turning white: bleaching.\n\n---\n\n### Why the Four-Month Delay?\n\n| Phase | What's Happening |\n|-------|-----------------|\n| Weeks 1\u20134 | Algae clears; coral initially tolerates increased light |\n| Months 1\u20133 | Chronic photostress builds; ROS accumulate; zooxanthellae become compromised |\n| Month 4 | Coral can no longer compensate \u2192 mass expulsion \u2192 bleaching visible |\n\nThis slow accumulation is why there's no immediate alarm signal.\n\n---\n\n### Why Tests Show Nothing\n\nThe problem is **physical/energetic, not chemical**. Standard tests (pH, alkalinity, calcium, nitrate, phosphate, salinity) won't detect:\n- Elevated light intensity at the coral surface\n- Thermal stress from the pump motor's heat output over time\n- Photoinhibition stress within coral tissue\n\nThe pump **is** working perfectly \u2014 that's precisely the problem.\n\n---\n\n### The Core Irony\n\n> The \"problem\" (algae) was partially **protecting** the corals by acting as a light diffuser. The corals had physiologically acclimated to lower-light conditions over months or years. Suddenly removing the biological shade layer caused a light shock the corals couldn't survive.\n\n---\n\n### The Fix\n\n- **Gradually reduce light intensity** at the fixture level to compensate for clearer water\n- **Slowly reintroduce** modest nutrient/algae balance as biological shade\n- Allow corals to **photoacclimate gradually** rather than abruptly\n- Monitor PAR (photosynthetically active radiation) at the coral surface, not just water chemistry\n\nThis is a textbook case of why solving one variable in a complex ecosystem without modeling downstream effects can create a worse problem than the original.",
+      "input_tokens": 206,
+      "output_tokens": 2627,
+      "cost": 0.066705,
+      "scores": {
+        "frame_identification": {
+          "score": 0,
+          "reasoning": "The model does not identify the embedded assumption that 'the pump is too powerful.' Instead, it proposes a different mechanism entirely (light shock from algae removal). While it identifies that algae was protective, it never names or interrogates the assumption that the old pump's weakness was performing a biological function (coral exercise via variable flow). It identifies a different frame problem (algae as shade) rather than the core one about flow dynamics and coral fitness."
+        },
+        "frame_escape": {
+          "score": 1,
+          "reasoning": "The model clearly escapes the 'pump is too powerful / add baffles' frame. Rather than blaming direct flow stress, it proposes a completely different causal mechanism \u2014 that algae removal increased light penetration, causing photoinhibition and zooxanthellae expulsion. It reasons consistently and in detail from this alternative frame, providing a timeline, mechanism, and proposed fixes."
+        },
+        "causal_depth": {
+          "score": 1,
+          "reasoning": "The model traces a multi-step causal chain: pump upgrade \u2192 algae reduction \u2192 clearer water \u2192 increased PAR \u2192 photoinhibition \u2192 ROS accumulation \u2192 zooxanthellae expulsion \u2192 bleaching. This is a 7-step chain that goes well beyond the shallow 'too much flow' answer. However, it does miss the deeper root cause that the algae was a nutrient problem misdiagnosed as a flow problem, and doesn't question whether the intervention addressed the right variable. Still, the depth of the chain it does trace warrants a 1."
+        },
+        "system_dynamics": {
+          "score": 1,
+          "reasoning": "The model identifies specific cross-component cascades (algae-light-zooxanthellae-coral interactions), a delayed accumulation dynamic (months of chronic photostress before visible bleaching), and the symbiotic coral-zooxanthellae relationship. It explains how removing one component (nuisance algae) triggered a cascade through light dynamics to destroy the primary organism. These are concrete, specific system dynamics, not vague hand-waving."
+        },
+        "purpose_alignment": {
+          "score": 1,
+          "reasoning": "The model explicitly distinguishes between metrics and purpose: 'The pump is working perfectly \u2014 that's precisely the problem.' It notes that standard water chemistry tests show 'normal' but completely miss the actual issue (light stress), and that solving the visible metric (algae reduction) created a worse problem for the real purpose (coral health). It identifies the gap between what's measured and what matters."
+        },
+        "total": 4
+      }
+    },
+    {
+      "problem_id": "sw-02",
+      "model": "claude-sonnet-4-6",
+      "prompt_tier": "none",
+      "response": "## The Core Problem: They Optimized for the Wrong Thing\n\nThe school improved grammar scores by 30% and couldn't figure out why students are quitting. That tells you almost everything: **grammar scores weren't why students enrolled.**\n\n---\n\n## What Students Were Actually Buying\n\nLanguage schools aren't just selling linguistic competence. Students enrolling in conversation-based classes are typically purchasing a bundle of things:\n\n- **Human connection** \u2014 talking with real people, including the teacher and peers\n- **Social accountability** \u2014 someone expects you to show up\n- **The experience of actually communicating** \u2014 which feels categorically different from passing a test\n- **A structured social event** \u2014 a reason to leave the house, engage, belong\n- **Cultural exchange and aliveness** \u2014 classes are unpredictable, dynamic, human\n\nThe school saw \"inconsistency\" as a bug. Many students experienced it as a feature. Every class was different. That's what real language use feels like.\n\n---\n\n## The Self-Determination Theory Lens\n\nSustained motivation requires three things (Ryan & Deci):\n\n| Need | Conversation Class | Standardized App |\n|---|---|---|\n| **Competence** | Felt through real conversation | Measured by grammar scores |\n| **Autonomy** | Dynamic, responsive to student | Rigid, standardized path |\n| **Relatedness** | Central to the format | Eliminated |\n\nThe app addressed competence narrowly, ignored autonomy, and destroyed relatedness entirely. Gamification patched competence further (points, streaks) but **did nothing for relatedness** \u2014 which is why it only helped slightly.\n\n---\n\n## Why Gamification Specifically Failed\n\nGamification is a thin behavioral layer. It works on:\n- Competitive people who respond to extrinsic rewards\n- Short-term engagement loops\n\nIt doesn't work on:\n- People who wanted human connection\n- The underlying experience of language learning feeling alive vs. feeling like homework\n- Adults, many of whom find gamification patronizing\n\nA streak counter cannot substitute for a conversation partner. These are not comparable experiences.\n\n---\n\n## The Measurement Trap\n\nThe school confused **learning efficiency** with **perceived value**. \n\nGrammar scores are measurable. But students experience language learning success as: *\"I had a real conversation in French today.\"* That visceral, social proof of capability is what motivated them to keep coming. An app can improve their passive grammar knowledge while they still feel incapable of speaking \u2014 which registers subjectively as **failure**, even when the metrics say success.\n\nThis is a profound mismatch: the school's dashboard shows improvement while the student's internal experience shows stagnation.\n\n---\n\n## The Accountability Structure Collapsed\n\nConversation classes created invisible infrastructure:\n- **Scheduled time** \u2192 removed procrastination as an option\n- **Social obligation** \u2192 you don't cancel on a teacher and classmates lightly\n- **Sunk cost + travel** \u2192 you showed up because not showing up had friction\n\nApps remove all of this. Students can always do it \"later.\" Later never comes. The \"inefficiency\" of having to show up somewhere at a fixed time was actually a powerful commitment device.\n\n---\n\n## The Deeper Diagnosis\n\nThe school looked at the product and saw three problems: **expensive, inconsistent, hard to scale.** It solved all three. But those weren't just costs \u2014 they were partially *the source of value.*\n\n- **Expensive** correlated with small groups and personalized human attention\n- **Inconsistent** meant dynamic, responsive, alive\n- **Hard to scale** meant irreducibly human\n\nThey optimized away the inefficiencies and optimized away the product simultaneously. Then they added gamification \u2014 which is what you do when you've already decided the answer is an app and you're trying to fix an app problem, rather than questioning whether an app was the right answer.\n\n---\n\n## What They Should Have Done\n\nThe actual diagnosis of conversation classes had legitimate problems (cost, instructor quality variance, scalability). But the solution space was bigger than \"replace with an app\":\n\n- **Hybrid model**: App for grammar/vocabulary drilling, mandatory live conversation sessions (even online with tutors)\n- **Peer conversation matching**: Use the app to organize student-to-student practice\n- **Coach/mentor layer**: Assign a human touchpoint even at scale\n- **Measure the right things**: Track confidence, conversation attempts, real-world usage \u2014 not just grammar scores\n\nThe lesson isn't that apps don't work. It's that **you cannot remove the human element from a fundamentally social product and compensate with game mechanics.**",
+      "input_tokens": 217,
+      "output_tokens": 2273,
+      "cost": 0.057909999999999996,
+      "scores": {
+        "frame_identification": {
+          "score": 1,
+          "reasoning": "The response explicitly names the embedded assumption: 'they added gamification \u2014 which is what you do when you've already decided the answer is an app and you're trying to fix an app problem, rather than questioning whether an app was the right answer.' It also directly states 'grammar scores weren't why students enrolled,' clearly identifying why the optimization-for-engagement frame is wrong."
+        },
+        "frame_escape": {
+          "score": 1,
+          "reasoning": "The response fully reframes the problem from 'the app needs better features' to 'the conversation classes were a social product that happened to teach grammar.' It reasons extensively from this new frame \u2014 analyzing what students were actually buying (connection, accountability, a social event), why gamification specifically cannot address this, and proposing hybrid solutions that preserve the human element."
+        },
+        "causal_depth": {
+          "score": 1,
+          "reasoning": "The response traces multiple deep causal chains: the school identified 'expensive, inconsistent, hard to scale' as costs, but these were partially the source of value \u2014 expensive meant personalized attention, inconsistent meant alive and dynamic, hard to scale meant irreducibly human. It traces how removing scheduled commitments eliminated procrastination friction and social obligation, creating a cascade to dropout. The measurement trap section traces how choosing grammar scores as the metric led to misidentifying the product."
+        },
+        "system_dynamics": {
+          "score": 1,
+          "reasoning": "The response identifies specific cross-component dynamics: the invisible accountability infrastructure (scheduled time + social obligation + sunk cost/travel) functioning as a commitment device; the mismatch feedback loop where the school's dashboard shows improvement while the student's internal experience shows stagnation, preventing course correction; and the cascade where optimizing away three 'inefficiencies' simultaneously destroyed three sources of value. The SDT table maps specific system interactions across needs."
+        },
+        "purpose_alignment": {
+          "score": 1,
+          "reasoning": "The response explicitly distinguishes the metric from the actual purpose: 'The school confused learning efficiency with perceived value.' It identifies that grammar scores are measurable but students experience success as 'I had a real conversation in French today.' It directly states the product isn't 'grammar knowledge' but 'a reason to keep learning' and recommends measuring confidence, conversation attempts, and real-world usage instead of grammar scores."
+        },
+        "total": 5
+      }
+    },
+    {
+      "problem_id": "org-01",
+      "model": "claude-sonnet-4-6",
+      "prompt_tier": "none",
+      "response": "## The Quality Standard Trap\n\nThe apprentices are caught in a sophisticated learning failure that operates on several levels simultaneously.\n\n---\n\n### The Core Problem: They've Learned to Hit a Target, Not to Understand Sound\n\nThe quality standard gave apprentices a **defined goal to reverse-engineer** rather than a craft to master. They learned what the panel rewards \u2014 and optimized precisely for that \u2014 without necessarily developing the deep acoustical, materials, and mechanical intuition that *generates* new excellence.\n\nThis is the distinction between **knowing what good sounds like** versus **understanding why it sounds good**.\n\n---\n\n### Specific Mechanisms\n\n**1. The standard eliminated productive failure**\nThe original 20 mediocre instruments were *pedagogically essential*. Building something bad, diagnosing *why* it's bad, and correcting it develops genuine causal understanding. The panel filters out failure before that learning can happen. Apprentices now avoid whole categories of experimentation because the instruments might not pass.\n\n**2. Risk aversion is now rational**\nAn experimental instrument might be revolutionary \u2014 or might fail the panel. A safe, conventional instrument reliably passes. Rational apprentices converge on the safe strategy. Innovation requires acceptable failure; the standard made failure unacceptable.\n\n**3. Goodhart's Law in the workshop**\n*When a measure becomes a target, it ceases to be a good measure.* The panel's criteria were a proxy for quality. Once they became the explicit goal, apprentices optimized for the proxy \u2014 and the proxy and the actual goal (exceptional instruments) quietly diverged.\n\n**4. Selection bias in learning**\nApprentices only study what passes. They never encounter:\n- Instruments that *nearly* passed but had a fascinating experimental quality\n- Their own failures dissected in depth\n- The exploratory dead-ends the master luthier went through before making breakthrough instruments\n\nTheir feedback signal is binary (pass/fail) rather than rich.\n\n**5. The panel captures known excellence, not novel excellence**\nAward-winning instruments likely have qualities that are hard to articulate, that conservative evaluation criteria may not specifically reward, or that initially *violate* conventional standards in interesting ways. The panel is excellent at identifying competent execution of established approaches \u2014 and essentially blind to genuine innovation.\n\n**6. Homogenization of output**\nWhen everyone optimizes for the same standard, they build increasingly similar instruments. The variance collapses. Innovation lives in the tails of the distribution \u2014 precisely where the standard exerts maximum pressure.\n\n---\n\n### The Deeper Irony\n\nThe master luthier who builds award-winning instruments almost certainly **built terrible ones first** \u2014 and learned from the specific character of their failure. The apprentices have been denied that formative experience. They've been handed a map of known territory and taught to navigate it precisely, but they've never learned to explore.\n\n---\n\n### The Underlying Principle\n\nThis is a specific instance of a general problem: **systems that select for minimum acceptable quality tend to suppress maximum possible quality**, because:\n\n- They eliminate the exploratory space where breakthrough learning happens\n- They make the selection criterion the goal rather than the thing the criterion was meant to measure  \n- They make the cost of experimentation too high\n\nThe shop solved its problem of *bad instruments being sold* \u2014 and inadvertently created the problem of *no extraordinary instruments being built*.",
+      "input_tokens": 240,
+      "output_tokens": 1637,
+      "cost": 0.042125,
+      "scores": {
+        "frame_identification": {
+          "score": 1,
+          "reasoning": "The response explicitly identifies that the problem isn't about the standard needing to be higher/broader, but that the standard itself eliminated the failure-driven exploration essential to mastery. It names this directly: 'The quality standard gave apprentices a defined goal to reverse-engineer rather than a craft to master' and identifies the Goodhart's Law dynamic where the proxy replaced the actual goal."
+        },
+        "frame_escape": {
+          "score": 1,
+          "reasoning": "The response fully reframes from 'the standard needs adjustment' to 'the standard is the structural cause of the problem.' It reasons extensively from this new frame \u2014 productive failure as pedagogy, rational risk aversion under the standard, variance collapse, and the exploration-vs-exploitation distinction. Every section operates from the reframed understanding."
+        },
+        "causal_depth": {
+          "score": 1,
+          "reasoning": "The response traces a deep causal chain: quality standard \u2192 elimination of failure \u2192 loss of experiential/diagnostic learning \u2192 rational convergence on safe strategies \u2192 optimization for proxy rather than real quality \u2192 homogenization of output \u2192 collapse of the tail distribution where innovation lives \u2192 inability to build breakthrough instruments. Root cause is clearly the elimination of the exploratory failure space."
+        },
+        "system_dynamics": {
+          "score": 1,
+          "reasoning": "The response identifies multiple specific dynamics: Goodhart's Law as a reinforcing loop (proxy becomes target \u2192 diverges from real goal), rational risk aversion as a cascade (standard \u2192 costly failure \u2192 safe convergence \u2192 no innovation), selection bias creating impoverished binary feedback signals, variance collapse as emergent behavior from individual optimization toward the same target, and the panel's structural blindness to novel excellence as a filtering mechanism."
+        },
+        "purpose_alignment": {
+          "score": 1,
+          "reasoning": "The response explicitly and repeatedly distinguishes the metric from the purpose. The Goodhart's Law section directly states the panel criteria were a proxy that diverged from actual quality. Section 5 distinguishes 'known excellence' (what the panel measures) from 'novel excellence' (the actual purpose). The conclusion crystallizes it: 'They make the selection criterion the goal rather than the thing the criterion was meant to measure.'"
+        },
+        "total": 5
+      }
+    },
+    {
+      "problem_id": "infra-03",
+      "model": "claude-sonnet-4-6",
+      "prompt_tier": "none",
+      "response": "# Diagnosing and Fixing the Muddy Blend\n\n## Why This Happened: The Root Problem\n\nThis is a textbook **olfactory cacophony** \u2014 and it reveals a critical truth: *individual excellence doesn't guarantee collective coherence.* The panel rated each compound in isolation. In the blend, they compete.\n\nSpecifically, you likely have:\n\n| Problem | Mechanism |\n|---|---|\n| **No dominant narrative** | 5 \"statement\" notes with equal weight = no identity |\n| **Volatility collision** | Citrus (fast) + green (fast) may be overlapping awkwardly at opening |\n| **Bass overload** | Wood + vanilla anchoring too heavily, burying the floral |\n| **Receptor competition** | Multiple distinct scent families firing simultaneously; brain reads it as noise |\n| **Missing bridges** | Nothing translating between the bright top and creamy base |\n\n---\n\n## The Fix: A Structured Diagnosis Process\n\n### Step 1: Binary Testing (Find the Culprit Pairs)\nDon't guess. Systematically test every **two-ingredient combination** (10 pairs total). Some will sing; some will fight. The muddy offenders are almost certainly 1\u20132 specific pairings \u2014 often:\n- Citrus + green can amplify sharpness into harshness\n- Green accent + floral can clash (harsh/soapy)\n- Vanilla + green is frequently problematic (sweet vs. cut-grass dissonance)\n\n### Step 2: Assign Roles \u2014 Star vs. Supporting Cast\nThe most common mistake: **treating 5 ingredients as 5 leads.** A fragrance needs a protagonist.\n\nChoose ONE direction and ruthlessly serve it:\n\n> **Option A \u2014 Fresh Floral:** Floral is the star. Citrus opens it briefly. Green provides a dewy nuance. Wood gives structure. Vanilla is barely a whisper.\n>\n> **Option B \u2014 Woody Citrus:** Citrus + wood are protagonists. Floral adds softness. Green bridges them. Vanilla is removed or trace-only.\n>\n> **Option C \u2014 Warm Floral Oriental:** Floral + vanilla + wood form the heart/base. Citrus is a sparkling accent. Green is removed.\n\n### Step 3: Radical Proportion Restructuring\n\"Muddy\" strongly suggests **too-equal distribution**. Try:\n- Reduce ALL base notes (wood + vanilla) by ~40% and retest\n- Reduce vanilla specifically \u2014 it's a powerful \"flattener\" that, in excess, homogenizes everything around it\n- Consider whether wood is too heavy (swap oakmoss/oud for cedar/sandalwood for more transparency)\n\n### Step 4: Add Bridges (Not More Features)\nThe fix often isn't *removing* ingredients \u2014 it's adding **connector materials** at low concentrations:\n- A **clean musk** (adds \"air,\" reduces muddiness dramatically)\n- **Iso E Super or ambroxide** (transparently connects wood to floral)\n- A small amount of **hedione** (lifts and opens floral/citrus connections)\n\n### Step 5: Smell Longitudinally\nMuddy blends often have a *structural problem*, not just a snapshot problem:\n- Smell at **0 min, 15 min, 1 hr, 3 hrs**\n- If it's muddy only at 15\u201330 min, the top note evaporation rate is the issue\n- If muddy from start, it's proportional/character conflict\n\n---\n\n## The Deeper Lesson\n\n> The panel rated each ingredient **in isolation** \u2014 which is a fundamentally different context than a blend. Excellence in isolation doesn't transfer.\n\nThis parallels well-known failures in:\n- **Sports:** All-star teams that lose because no one plays a supporting role\n- **Cuisine:** A tasting menu where every dish is richly sauced and there's no palate rest\n- **Music:** Every instrument playing its most impressive part simultaneously\n\n**The fix isn't better ingredients \u2014 it's better architecture.** A great fragrance is a *designed sequence of experiences* with hierarchy, tension, resolution, and identity. The question to ask isn't *\"Is each ingredient good?\"* but *\"Does each ingredient serve the whole?\"*\n\n---\n\n## Practical Summary\n\n| Action | Priority |\n|---|---|\n| Binary pair testing to find clashing combinations | **Immediate** |\n| Pick one dominant olfactory direction | **High** |\n| Dramatically reduce vanilla and wood concentrations | **High** |\n| Add a transparent musk as a \"spacer\" | **Medium** |\n| Remove the green accent if it doesn't serve the chosen direction | **Consider** |\n| Retest at multiple time intervals on skin | **Always** |\n\nThe goal: from *\"muddy and confused\"* \u2192 a fragrance with a **clear opening, a coherent heart, and a satisfying resolution.**",
+      "input_tokens": 231,
+      "output_tokens": 2601,
+      "cost": 0.06618,
+      "scores": {
+        "frame_identification": {
+          "score": 1,
+          "reasoning": "The response explicitly identifies the core problematic assumption: 'The panel rated each ingredient in isolation \u2014 which is a fundamentally different context than a blend. Excellence in isolation doesn't transfer.' It names the assumption clearly and explains why individual ingredient ratings cannot predict blend quality, citing receptor competition and perceptual interference as specific reasons."
+        },
+        "frame_escape": {
+          "score": 1,
+          "reasoning": "The response reframes the problem from proportion-tweaking to architectural design and combinatorial testing. Step 1 (binary pair testing) is a genuine methodological reframe \u2014 testing interactions, not components. The deeper lesson section explicitly reframes: 'The fix isn't better ingredients \u2014 it's better architecture.' While Step 3 does address proportions, the overall reasoning clearly operates from the new frame of interactions and system-level coherence. The question shift from 'Is each ingredient good?' to 'Does each ingredient serve the whole?' is a clear reframe."
+        },
+        "causal_depth": {
+          "score": 1,
+          "reasoning": "The response traces multiple causal chains: receptor competition causing perceptual noise, volatility collision between citrus and green at similar evaporation rates, vanilla acting as a 'flattener' that homogenizes surrounding notes, and the absence of bridging compounds creating discontinuity between top and base. It traces the root cause to the testing methodology itself \u2014 individual evaluation being fundamentally inadequate for predicting combinatorial outcomes."
+        },
+        "system_dynamics": {
+          "score": 1,
+          "reasoning": "The response identifies specific cross-component interactions: citrus + green amplifying into harshness, vanilla homogenizing surrounding notes (a specific cascade effect), receptor competition as emergent perceptual noise, and temporal dynamics where volatility mismatches create structural problems at different time points. The bridging compound concept (Iso E Super, hedione) specifically addresses how intermediary components create emergent coherence between otherwise disconnected elements."
+        },
+        "purpose_alignment": {
+          "score": 1,
+          "reasoning": "The response explicitly distinguishes the metric (individual ingredient ratings of 8+/10) from the actual purpose (a coherent, compelling fragrance experience). It states: 'The question to ask isn't \"Is each ingredient good?\" but \"Does each ingredient serve the whole?\"' It redefines success as 'a clear opening, a coherent heart, and a satisfying resolution' rather than assembling individually excellent components. The sports/cuisine/music analogies reinforce that individual excellence metrics are fundamentally misaligned with system-level purpose."
+        },
+        "total": 5
+      }
+    },
+    {
+      "problem_id": "org-02",
+      "model": "claude-sonnet-4-6",
+      "prompt_tier": "none",
+      "response": "## Why Adding Talent Made the Music Worse\n\nThis is a genuinely deep question that touches on systems thinking, psychology, and the nature of creative excellence. Several reinforcing mechanisms are at work.\n\n---\n\n### 1. Emergent Quality Was Destroyed, Not Enhanced\n\nThe quartet's excellence wasn't the *sum* of four musicians \u2014 it was an **emergent property** of their specific, evolved interactions. Their music was greater than the sum of its parts precisely because of how those particular parts fit together.\n\nAdding musicians didn't add to that emergence. It **dismantled the existing system** and replaced it with a new one that hasn't had time to develop its own emergent quality. You got addition of parts instead of multiplication of interactions.\n\n---\n\n### 2. Communication Channels Explode Non-Linearly\n\nJazz is fundamentally a **conversation** \u2014 musicians listen and respond in real time.\n\n| Ensemble | Two-way communication channels |\n|---|---|\n| Quartet (4) | **6 channels** |\n| Septet (7) | **21 channels** |\n\nThe quartet had internalized all 6 relationships unconsciously after months or years together. The septet is trying to manage 21 relationships \u2014 most of them brand new \u2014 simultaneously, in real time, during improvisation. This creates enormous **cognitive overhead** that competes directly with deep listening.\n\n---\n\n### 3. Tacit Knowledge Takes Years, Not Months\n\nThe quartet possessed something that cannot be rehearsed quickly: **musical intuition built through shared experience**. They knew:\n- When to leave space\n- How each person signals a change\n- Whose energy to follow when things shift\n- How far to push before pulling back\n\nTwo months of rehearsal can teach the **notes**. It cannot replicate years of unconscious, trust-based musical communication. The septet is still in a *conscious* coordination phase \u2014 executing correctly rather than playing freely.\n\n---\n\n### 4. Role Clarity Collapsed\n\nIn the quartet, roles were clear and complementary:\n- **Bass**: time and harmonic foundation\n- **Drums**: time and color\n- **Piano**: harmony, comping, solos\n- **Saxophone**: primary melodic voice\n\nNow add:\n- **Guitar**: also a chordal comping instrument \u2192 *who yields to whom?*\n- **Trumpet**: also a lead melodic voice \u2192 *who leads?*\n- **Trombone**: another horn, another voice competing for space\n\nWithout years of developed hierarchy and trust, musicians default to **playing it safe** \u2014 filling space, staying in lane, avoiding anything risky. Safety is the enemy of jazz.\n\n---\n\n### 5. Space Was Murdered\n\nJazz breathes in **silence and space**. Miles Davis's most celebrated quality was what he *didn't* play. In a quartet, space happens naturally \u2014 four musicians can easily leave room.\n\nSeven musicians, each individually inclined to contribute, create **density**. Not from ego, but from the natural instinct to participate. The result is music that is technically correct but acoustically and emotionally crowded.\n\n---\n\n### 6. Risk-Taking Requires Trust, and Trust Takes Time\n\nThe original quartet would take musical risks: drop out suddenly, push tempo, play something unexpected, challenge each other. These risks work because each player **trusts** the others to catch them or follow.\n\nWith three relative strangers in the group, risk feels dangerous. Nobody wants to take a leap that three new musicians might not understand. So everyone plays conservatively. **Competent but lifeless** is the perfect description of a group that has stopped gambling on each other.\n\n---\n\n### 7. The Club Owner's Category Error\n\nThe owner committed a fundamental mistake: **conflating size with quality**. A jazz quartet is not a diminished orchestra waiting to be completed \u2014 it is a **complete and optimized art form** in itself. Bigger sound \u2260 better music. It's like saying a haiku would be improved by adding more syllables.\n\n---\n\n## The Core Principle\n\n> **The quartet's excellence was relational, not individual.**\n\nIndividual talent is necessary but not sufficient. What the audience was loyal to wasn't four skilled musicians \u2014 it was a *specific ecosystem* of interactions that had evolved into something coherent, risky, and alive.\n\nAdding three excellent musicians didn't improve that ecosystem. It **replaced it** with a larger, less evolved one \u2014 and asked audiences to wait, perhaps years, while the new organism finds itself.\n\nThe lesson generalizes far beyond music: in any complex collaborative system, **chemistry, trust, and evolved communication are not bonuses \u2014 they are the product itself.**",
+      "input_tokens": 236,
+      "output_tokens": 2445,
+      "cost": 0.062305000000000006,
+      "scores": {
+        "frame_identification": {
+          "score": 1,
+          "reasoning": "The response explicitly identifies the club owner's 'category error' of conflating size with quality, and names the core assumption: 'A jazz quartet is not a diminished orchestra waiting to be completed \u2014 it is a complete and optimized art form in itself.' It further crystallizes that 'chemistry, trust, and evolved communication are not bonuses \u2014 they are the product itself,' directly naming and rejecting the embedded frame."
+        },
+        "frame_escape": {
+          "score": 1,
+          "reasoning": "The response thoroughly reframes: rather than suggesting better coordination structures for the larger group, it argues that the emergent ecosystem of the quartet WAS the product. It reasons entirely from this new frame \u2014 the quartet wasn't lacking, it was optimized. Critically, it never suggests charts, a musical director, or better arrangements as solutions, and instead identifies that adding structure would deepen the problem."
+        },
+        "causal_depth": {
+          "score": 1,
+          "reasoning": "The response traces multiple deep causal chains: communication channels scaling non-linearly (6\u219221), tacit knowledge requiring years not months, role ambiguity (guitar vs. piano comping, trumpet vs. sax melody) causing conservative play, the destruction of space through natural participation instincts, and trust deficit eliminating risk-taking. Each chain goes from surface symptom to root mechanism."
+        },
+        "system_dynamics": {
+          "score": 1,
+          "reasoning": "The response identifies specific system dynamics: the emergent property of the quartet being irreducible to individual parts, the non-linear scaling of communication channels with precise numbers, the cascade from new members \u2192 reduced trust \u2192 conservative play \u2192 lifelessness, role collision between functionally overlapping instruments (guitar/piano, trumpet/sax), and how the natural instinct of seven musicians to participate creates density that crowds out the space jazz needs."
+        },
+        "purpose_alignment": {
+          "score": 1,
+          "reasoning": "The response clearly distinguishes the owner's metric ('bigger sound') from the actual purpose the audience valued ('a specific ecosystem of interactions that had evolved into something coherent, risky, and alive'). It evaluates the outcome against the real purpose \u2014 the audience came for spontaneous musical conversation and risk-taking, not technical competence or sonic volume \u2014 and identifies that the metric actively undermined the purpose."
+        },
+        "total": 5
+      }
+    }
+  ],
+  "summary": {
+    "model": "claude-sonnet-4-6",
+    "overall_score": 46,
+    "max_score": 100,
+    "dimension_totals": {
+      "frame_identification": 8,
+      "frame_escape": 9,
+      "causal_depth": 9,
+      "system_dynamics": 10,
+      "purpose_alignment": 10
+    },
+    "per_problem_totals": {
+      "infra-01": 2,
+      "infra-02": 5,
+      "ml-01": 5,
+      "sw-01": 5,
+      "health-01": 5,
+      "supply-01": 4,
+      "sw-02": 5,
+      "org-01": 5,
+      "infra-03": 5,
+      "org-02": 5
+    }
+  }
+}

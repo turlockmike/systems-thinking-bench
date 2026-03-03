@@ -140,7 +140,7 @@ def claude_call(prompt, *, model, system_prompt=None, max_tokens=16384):
         input=prompt,
         capture_output=True,
         text=True,
-        timeout=300,
+        timeout=600,
         env=env,
         cwd="/tmp",  # clean CWD — no project-level CLAUDE.md
     )

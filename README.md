@@ -10,24 +10,30 @@ LLMs are excellent at reasoning *within* a given frame but rarely question wheth
 
 > Full results with model responses and judge reasoning: [`results/`](results/)
 
-### Haiku 4.5 — No Hints
+### Model Comparison — No Hints
 
-| # | Problem | Frame | Escape | Causal | Dynamics | Purpose | Total |
-|---|---------|:-----:|:------:|:------:|:--------:|:-------:|:-----:|
-| 1 | [The Efficient Dehumidifier](results/haiku-4-5/none/infra-01.md) | 0 | 0 | 0 | 0 | 1 | **1** |
-| 2 | [The Diligent Proofreaders](results/haiku-4-5/none/infra-02.md) | 1 | 1 | 0 | 1 | 1 | **4** |
-| 3 | [The Reliable Route](results/haiku-4-5/none/ml-01.md) | 1 | 1 | 0 | 1 | 1 | **4** |
-| 4 | [The Specialized Kitchen](results/haiku-4-5/none/sw-01.md) | 1 | 0 | 1 | 1 | 1 | **4** |
-| 5 | [The Smart Meters](results/haiku-4-5/none/health-01.md) | 1 | 0 | 1 | 1 | 1 | **4** |
-| 6 | [The Powerful Pump](results/haiku-4-5/none/supply-01.md) | 0 | 1 | 0 | 1 | 0 | **2** |
-| 7 | [The Efficient Curriculum](results/haiku-4-5/none/sw-02.md) | 1 | 1 | 1 | 1 | 1 | **5** |
-| 8 | [The Quality Standard](results/haiku-4-5/none/org-01.md) | 1 | 1 | 1 | 1 | 1 | **5** |
-| 9 | [The Perfect Ingredients](results/haiku-4-5/none/infra-03.md) | 1 | 0 | 0 | 1 | 1 | **3** |
-| 10 | [The Bigger Ensemble](results/haiku-4-5/none/org-02.md) | 0 | 0 | 0 | 0 | 1 | **1** |
-| | **Total** | **7/10** | **5/10** | **4/10** | **8/10** | **9/10** | **33/50** |
+| Model | Overall | Frame | Escape | Causal | Dynamics | Purpose | Cost |
+|-------|:-------:|:-----:|:------:|:------:|:--------:|:-------:|-----:|
+| [Haiku 4.5](results/haiku-4-5/none/report.md) | **33/50** (66%) | 7/10 | 5/10 | 4/10 | 8/10 | 9/10 | $0.06 |
+| [Opus 4.6](results/opus-4-6/none/report.md) | **45/50** (90%) | 9/10 | 9/10 | 8/10 | 9/10 | 10/10 | $0.38 |
+| [Sonnet 4.6](results/sonnet-4-6/none/report.md) | **46/50** (92%) | 8/10 | 9/10 | 9/10 | 10/10 | 10/10 | $0.53 |
 
-**Weakest dimension:** Causal Depth (40%) — Haiku identifies problems but doesn't trace the full causal chain.
-**Hardest problems:** The Efficient Dehumidifier (1/5), The Bigger Ensemble (1/5) — near-complete blind spots where Haiku falls for the surface answer.
+### Per-Problem Breakdown
+
+| # | Problem | Haiku | Sonnet | Opus |
+|---|---------|:-----:|:------:|:----:|
+| 1 | [The Efficient Dehumidifier](results/haiku-4-5/none/infra-01.md) | 1 | 2 | 4 |
+| 2 | [The Diligent Proofreaders](results/haiku-4-5/none/infra-02.md) | 4 | 5 | 5 |
+| 3 | [The Reliable Route](results/haiku-4-5/none/ml-01.md) | 4 | 5 | 5 |
+| 4 | [The Specialized Kitchen](results/haiku-4-5/none/sw-01.md) | 4 | 5 | 5 |
+| 5 | [The Smart Meters](results/haiku-4-5/none/health-01.md) | 4 | 5 | 5 |
+| 6 | [The Powerful Pump](results/haiku-4-5/none/supply-01.md) | 2 | 4 | **1** |
+| 7 | [The Efficient Curriculum](results/haiku-4-5/none/sw-02.md) | 5 | 5 | 5 |
+| 8 | [The Quality Standard](results/haiku-4-5/none/org-01.md) | 5 | 5 | 5 |
+| 9 | [The Perfect Ingredients](results/haiku-4-5/none/infra-03.md) | 3 | 5 | 5 |
+| 10 | [The Bigger Ensemble](results/haiku-4-5/none/org-02.md) | 1 | 5 | 5 |
+
+**The Powerful Pump** is the hardest problem — even Opus scores 1/5, missing the biological fitness mechanism entirely. **The Efficient Dehumidifier** also trips up all models on causal depth (recipe change → cure time change → dehumidifier skips chemistry).
 
 ## How It Works
 
